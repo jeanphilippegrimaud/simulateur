@@ -11,7 +11,7 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: #1e2d40;
+    background: #4B6088;
     min-height: 100vh;
     display: flex;
     align-items: flex-start;
@@ -26,8 +26,8 @@
     content: '';
     position: fixed; inset: 0;
     background:
-      radial-gradient(ellipse at 20% 20%, rgba(201,169,110,0.07) 0%, transparent 55%),
-      radial-gradient(ellipse at 80% 80%, rgba(75,96,136,0.15) 0%, transparent 55%);
+      radial-gradient(ellipse at 20% 20%, rgba(201,169,110,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(30,45,64,0.2) 0%, transparent 55%);
     pointer-events: none;
   }
 
@@ -255,17 +255,17 @@
     </a>
 
     <!-- RDV -->
-    <a href="tel:+33660146188" class="link-btn">
+    <a href="#" class="link-btn" onclick="ouvrirRDV(); return false;">
       <div class="link-icon">📞</div>
       <div class="link-text">
         <span class="link-label">Prendre rendez-vous</span>
-        <span class="link-desc">Tél · Visio · Domicile (près de Rennes)</span>
+        <span class="link-desc">Je vous rappelle rapidement</span>
       </div>
       <span class="link-arrow">→</span>
     </a>
 
     <!-- SITE PRINCIPAL -->
-    <a href="https://jean-finance-pretto.netlify.app" target="_blank" class="link-btn">
+    <a href="https://jeanphilippegrimaud.github.io/simulateur/" target="_blank" class="link-btn">
       <div class="link-icon">🌐</div>
       <div class="link-text">
         <span class="link-label">Mon site complet</span>
@@ -277,36 +277,30 @@
     <div class="section-label">Contact direct</div>
 
     <!-- EMAIL -->
-    <a href="mailto:jean-philippe.grimaud@bypretto.fr" class="link-btn">
+    <a href="#" class="link-btn" onclick="ouvrirContact(); return false;">
       <div class="link-icon">✉️</div>
       <div class="link-text">
         <span class="link-label">M'envoyer un message</span>
-        <span class="link-desc">jean-philippe.grimaud@bypretto.fr</span>
+        <span class="link-desc">Formulaire direct · Sans email requis</span>
       </div>
       <span class="link-arrow">→</span>
     </a>
 
     <!-- APPEL -->
-    <a href="tel:+33660146188" class="link-btn">
-      <div class="link-icon">📱</div>
-      <div class="link-text">
-        <span class="link-label">M'appeler directement</span>
-        <span class="link-desc">06 60 14 61 88</span>
-      </div>
-      <span class="link-arrow">→</span>
-    </a>
+
 
     <div class="section-label">Vous voulez rejoindre mon équipe ?</div>
 
     <!-- MANDATAIRE -->
-    <a href="https://jean-finance-pretto.netlify.app/#mentor" target="_blank" class="link-btn">
+    <a href="#" class="link-btn" onclick="ouvrirMandataire(); return false;">
       <div class="link-icon">🚀</div>
       <div class="link-text">
         <span class="link-label">Devenir mandataire à mes côtés</span>
-        <span class="link-desc">Recrutement Bretagne · Pretto Galaxie</span>
+        <span class="link-desc">Envoie-moi tes coordonnées</span>
       </div>
       <span class="link-arrow">→</span>
     </a>
+
 
   </div>
 
@@ -511,5 +505,141 @@ async function contactSim() {
 }
 </script>
 
+
+<!-- MODALE CONTACT -->
+<div id="overlay-contact" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(14,28,47,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#f4f2ec;border-radius:12px;width:90%;max-width:420px;padding:2rem;position:relative;">
+    <button onclick="fermerContact()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#3a5270;">✕</button>
+    <h2 id="ct-title" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:#1e2d40;margin-bottom:0.3rem;">Envoyer un message</h2>
+    <p id="ct-sub" style="font-size:0.78rem;color:#5a7288;margin-bottom:1.25rem;">Je vous réponds dans la journée.</p>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem;">
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Prénom & Nom *</label>
+        <input type="text" id="ct-nom" placeholder="Sophie Martin" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+      </div>
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Téléphone *</label>
+        <input type="tel" id="ct-tel" placeholder="06 XX XX XX XX" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+      </div>
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Email</label>
+        <input type="email" id="ct-email" placeholder="votre@email.fr" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+      </div>
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Votre message *</label>
+        <textarea id="ct-msg" rows="3" placeholder="Bonjour Jean-Philippe..." style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;resize:vertical;"></textarea>
+      </div>
+    </div>
+    <div id="ct-err" style="display:none;font-size:0.75rem;color:#8b3a1a;background:#fdf0e8;border:1px solid #f0c8a0;border-radius:4px;padding:0.6rem;margin-bottom:0.75rem;"></div>
+    <button id="ct-btn" onclick="envoyerContact()" style="width:100%;background:#c9a96e;color:#1e2d40;border:none;padding:0.85rem;border-radius:6px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Envoyer mon message</button>
+  </div>
+</div>
+
+<!-- MODALE MANDATAIRE -->
+<div id="overlay-mandataire" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(14,28,47,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#f4f2ec;border-radius:12px;width:90%;max-width:420px;padding:2rem;position:relative;">
+    <button onclick="fermerMandataire()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#3a5270;">✕</button>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:#1e2d40;margin-bottom:0.3rem;">Tu veux rejoindre mon équipe ?</h2>
+    <p style="font-size:0.78rem;color:#5a7288;margin-bottom:1.25rem;">Laisse-moi tes coordonnées, je te recontacte rapidement pour échanger.</p>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem;">
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Prénom & Nom *</label>
+        <input type="text" id="ma-nom" placeholder="Thomas Dupont" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+      </div>
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Téléphone *</label>
+        <input type="tel" id="ma-tel" placeholder="06 XX XX XX XX" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+      </div>
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Email</label>
+        <input type="email" id="ma-email" placeholder="votre@email.fr" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+      </div>
+      <div>
+        <label style="font-size:0.68rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#5a7288;display:block;margin-bottom:0.3rem;">Votre profil</label>
+        <select id="ma-profil" style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:6px;font-size:0.9rem;color:#1e2d40;font-family:'DM Sans',sans-serif;background:#fff;">
+          <option value="">Sélectionnez...</option>
+          <option>En reconversion professionnelle</option>
+          <option>Issu du secteur bancaire</option>
+          <option>Déjà dans l'immobilier</option>
+          <option>Courtier confirmé</option>
+        </select>
+      </div>
+    </div>
+    <div id="ma-err" style="display:none;font-size:0.75rem;color:#8b3a1a;background:#fdf0e8;border:1px solid #f0c8a0;border-radius:4px;padding:0.6rem;margin-bottom:0.75rem;"></div>
+    <button id="ma-btn" onclick="envoyerMandataire()" style="width:100%;background:#4B6088;color:#edeae0;border:none;padding:0.85rem;border-radius:6px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Envoyer mes coordonnées</button>
+  </div>
+</div>
+
+<script>
+function ouvrirContact() {
+  document.getElementById('overlay-contact').style.display = 'flex';
+  document.getElementById('ct-title').textContent = 'Envoyer un message';
+  document.getElementById('ct-sub').textContent = 'Je vous réponds dans la journée.';
+  document.getElementById('ct-btn').textContent = 'Envoyer mon message';
+  document.body.style.overflow = 'hidden';
+}
+function ouvrirRDV() {
+  document.getElementById('overlay-contact').style.display = 'flex';
+  document.getElementById('ct-title').textContent = 'Prendre rendez-vous';
+  document.getElementById('ct-sub').textContent = 'Laissez vos coordonnées, je vous rappelle sous 24h.';
+  document.getElementById('ct-btn').textContent = 'Je veux être rappelé(e)';
+  document.body.style.overflow = 'hidden';
+}
+function fermerContact() {
+  document.getElementById('overlay-contact').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function ouvrirMandataire() {
+  document.getElementById('overlay-mandataire').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function fermerMandataire() {
+  document.getElementById('overlay-mandataire').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('overlay-contact').addEventListener('click', function(e) { if(e.target===this) fermerContact(); });
+  document.getElementById('overlay-mandataire').addEventListener('click', function(e) { if(e.target===this) fermerMandataire(); });
+});
+async function envoyerContact() {
+  var nom = document.getElementById('ct-nom').value.trim();
+  var tel = document.getElementById('ct-tel').value.trim();
+  var email = document.getElementById('ct-email').value.trim();
+  var msg = document.getElementById('ct-msg').value.trim();
+  var titre = document.getElementById('ct-title').textContent;
+  var err = document.getElementById('ct-err');
+  if (!nom || !tel || !msg) { err.style.display='block'; err.textContent='Merci de remplir tous les champs obligatoires.'; return; }
+  err.style.display = 'none';
+  var btn = document.getElementById('ct-btn');
+  btn.textContent = 'Envoi...'; btn.disabled = true;
+  try {
+    var res = await fetch('https://formspree.io/f/mvzdoeyb', {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ nom:nom, telephone:tel, email:email||'NC', message:msg, source:'Lien en bio — '+titre, _subject:titre+' — '+nom })
+    });
+    if (res.ok) { btn.textContent='✓ Envoyé ! Je vous réponds sous 24h.'; btn.style.background='#3d7a5c'; btn.style.color='#fff'; }
+    else { throw new Error(); }
+  } catch(e) { btn.textContent='Erreur — Appelez le 06 60 14 61 88'; btn.style.background='#8b3a1a'; btn.style.color='#fff'; btn.disabled=false; }
+}
+async function envoyerMandataire() {
+  var nom = document.getElementById('ma-nom').value.trim();
+  var tel = document.getElementById('ma-tel').value.trim();
+  var email = document.getElementById('ma-email').value.trim();
+  var profil = document.getElementById('ma-profil').value;
+  var err = document.getElementById('ma-err');
+  if (!nom || !tel) { err.style.display='block'; err.textContent='Merci de renseigner ton nom et téléphone.'; return; }
+  err.style.display = 'none';
+  var btn = document.getElementById('ma-btn');
+  btn.textContent = 'Envoi...'; btn.disabled = true;
+  try {
+    var res = await fetch('https://formspree.io/f/mvzdoeyb', {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ nom:nom, telephone:tel, email:email||'NC', profil:profil||'NC', source:'Lien en bio — mandataire', _subject:'Candidature mandataire — '+nom })
+    });
+    if (res.ok) { btn.textContent='✓ Reçu ! Jean-Philippe te recontacte vite.'; btn.style.background='#3d7a5c'; btn.style.color='#fff'; }
+    else { throw new Error(); }
+  } catch(e) { btn.textContent='Erreur — Appelle le 06 60 14 61 88'; btn.style.background='#8b3a1a'; btn.style.color='#fff'; btn.disabled=false; }
+}
+</script>
 </body>
 </html>
