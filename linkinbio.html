@@ -495,8 +495,23 @@ async function contactSim() {
       })
     });
     if (res.ok) {
-      btn.textContent = '✓ Envoyé ! Jean-Philippe vous recontacte sous 24h.';
-      btn.style.background = '#3d7a5c'; btn.style.color = '#fff';
+      var modal = btn.closest('div[id="lb-step2"]') || btn.parentElement;
+      var confirmDiv = document.createElement('div');
+      confirmDiv.style.cssText = 'text-align:center;padding:1rem 0;';
+      confirmDiv.innerHTML = `
+        <div style="font-size:3rem;margin-bottom:1rem;">🏠</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:#1e2d40;margin-bottom:0.75rem;">Simulation envoyée !</h2>
+        <p style="font-size:0.82rem;color:#3a5270;line-height:1.7;margin-bottom:1rem;">
+          Merci pour votre confiance.<br>
+          <strong style="color:#1e2d40;">Jean-Philippe vous recontactera dans les 24 heures</strong><br>
+          pour affiner votre projet et vous proposer les meilleures conditions.
+        </p>
+        <div style="background:#f4f2ec;border:1px solid #e0ddd5;border-radius:8px;padding:0.85rem;margin-bottom:1rem;">
+          <div style="font-size:0.72rem;color:#5a7288;margin-bottom:0.25rem;">Ou appelez-le directement :</div>
+          <a href="tel:+33660146188" style="font-size:1rem;font-weight:500;color:#4B6088;text-decoration:none;">📞 06 60 14 61 88</a>
+        </div>`;
+      document.getElementById('lb-step2').innerHTML = '';
+      document.getElementById('lb-step2').appendChild(confirmDiv);
     } else { throw new Error(); }
   } catch(e) {
     btn.textContent = 'Erreur — Appelez le 06 60 14 61 88';
@@ -562,6 +577,7 @@ async function contactSim() {
           <option>Issu du secteur bancaire</option>
           <option>Déjà dans l'immobilier</option>
           <option>Courtier confirmé</option>
+          <option>Autre</option>
         </select>
       </div>
     </div>
@@ -617,7 +633,24 @@ async function envoyerContact() {
       method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify({ nom:nom, telephone:tel, email:email||'NC', message:msg, source:'Lien en bio — '+titre, _subject:titre+' — '+nom })
     });
-    if (res.ok) { btn.textContent='✓ Envoyé ! Je vous réponds sous 24h.'; btn.style.background='#3d7a5c'; btn.style.color='#fff'; }
+    if (res.ok) {
+      var modal = btn.closest('div[style*="border-radius:12px"]');
+      modal.innerHTML = `
+        <div style="text-align:center;padding:1rem 0;">
+          <div style="font-size:3rem;margin-bottom:1rem;">🙏</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;color:#1e2d40;margin-bottom:0.75rem;">Merci beaucoup !</h2>
+          <p style="font-size:0.85rem;color:#5a7288;line-height:1.7;margin-bottom:1.25rem;">
+            Votre message a bien été reçu.<br>
+            <strong style="color:#1e2d40;">Jean-Philippe vous recontactera dans les 24 heures</strong><br>
+            pour échanger avec vous sur votre projet.
+          </p>
+          <div style="background:#f4f2ec;border:1px solid #e0ddd5;border-radius:8px;padding:1rem;margin-bottom:1.25rem;">
+            <div style="font-size:0.75rem;color:#5a7288;margin-bottom:0.3rem;">En attendant, vous pouvez l'appeler directement :</div>
+            <a href="tel:+33660146188" style="font-size:1.1rem;font-weight:500;color:#4B6088;text-decoration:none;">📞 06 60 14 61 88</a>
+          </div>
+          <button onclick="fermerContact()" style="background:#4B6088;color:#edeae0;border:none;padding:0.75rem 2rem;border-radius:6px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Fermer</button>
+        </div>`;
+    }
     else { throw new Error(); }
   } catch(e) { btn.textContent='Erreur — Appelez le 06 60 14 61 88'; btn.style.background='#8b3a1a'; btn.style.color='#fff'; btn.disabled=false; }
 }
@@ -636,7 +669,24 @@ async function envoyerMandataire() {
       method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify({ nom:nom, telephone:tel, email:email||'NC', profil:profil||'NC', source:'Lien en bio — mandataire', _subject:'Candidature mandataire — '+nom })
     });
-    if (res.ok) { btn.textContent='✓ Reçu ! Jean-Philippe te recontacte vite.'; btn.style.background='#3d7a5c'; btn.style.color='#fff'; }
+    if (res.ok) {
+      var modal = btn.closest('div[style*="border-radius:12px"]');
+      modal.innerHTML = `
+        <div style="text-align:center;padding:1rem 0;">
+          <div style="font-size:3rem;margin-bottom:1rem;">🚀</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;color:#1e2d40;margin-bottom:0.75rem;">Candidature reçue !</h2>
+          <p style="font-size:0.85rem;color:#5a7288;line-height:1.7;margin-bottom:1.25rem;">
+            Merci pour ta confiance et ton intérêt.<br>
+            <strong style="color:#1e2d40;">Jean-Philippe te recontactera dans les 24 heures</strong><br>
+            pour échanger sur ton projet de devenir mandataire au sein de Pretto Galaxie.
+          </p>
+          <div style="background:#f4f2ec;border:1px solid #e0ddd5;border-radius:8px;padding:1rem;margin-bottom:1.25rem;">
+            <div style="font-size:0.75rem;color:#5a7288;margin-bottom:0.3rem;">Tu peux aussi l'appeler directement :</div>
+            <a href="tel:+33660146188" style="font-size:1.1rem;font-weight:500;color:#4B6088;text-decoration:none;">📞 06 60 14 61 88</a>
+          </div>
+          <button onclick="fermerMandataire()" style="background:#4B6088;color:#edeae0;border:none;padding:0.75rem 2rem;border-radius:6px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Fermer</button>
+        </div>`;
+    }
     else { throw new Error(); }
   } catch(e) { btn.textContent='Erreur — Appelle le 06 60 14 61 88'; btn.style.background='#8b3a1a'; btn.style.color='#fff'; btn.disabled=false; }
 }
