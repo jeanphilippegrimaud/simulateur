@@ -113,7 +113,8 @@
   .nav-logo .by { font-weight: 300; color: rgba(237,234,224,0.5); font-size: 0.78rem; }
   .nav-logo .pretto { font-weight: 700; color: #c9a96e; letter-spacing: -0.03em; font-size: 1rem; }
   @media (max-width: 600px) {
-    .nav-logo .membre, .nav-logo .by { display: none; }
+    .nav-logo .membre { display: none; }
+    .nav-logo .by { display: inline; font-size: 0.72rem; }
     .nav-logo .pretto { font-size: 0.82rem; }
     .nav-logo { gap: 0.2rem; }
     .nav-cta { font-size: 0.68rem; padding: 0.5rem 0.85rem; letter-spacing: 0.03em; white-space: nowrap; }
@@ -819,7 +820,7 @@
     }
     .pg-chiffres {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: #d8d2c8;
       margin-top: 3rem;
@@ -868,7 +869,7 @@
       <div class="pg-chiffre-num">Top<span>5</span></div>
       <div class="pg-chiffre-label">courtier en France</div>
     </div>
-    <div class="pg-chiffre" style="grid-column:span 1;background:#4B6088;border-left:2px solid #c9a96e;">
+    <div class="pg-chiffre" style="background:#4B6088;border-left:2px solid #c9a96e;">
       <div class="pg-chiffre-num" style="color:#edeae0;font-size:1.1rem;font-weight:500;letter-spacing:0.01em;">Objectif</div>
       <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:#c9a96e;line-height:1;margin:0.3rem 0;">N°<span style="color:#edeae0;">1</span></div>
       <div class="pg-chiffre-label" style="color:rgba(237,234,224,0.6);">leader du courtage en France d'ici 5 ans</div>
@@ -1825,6 +1826,24 @@ function calculer() {
   </div>
   <div class="footer-text">Basé à Rennes · Toute la France · Depuis 2003</div>
 </footer>
+
+<!-- MENTIONS LÉGALES -->
+<div style="background:#1e2d40;padding:1.5rem 4rem;border-top:1px solid rgba(201,169,110,0.1);">
+  <div style="max-width:900px;margin:0 auto;font-family:'DM Sans',sans-serif;font-size:0.60rem;color:rgba(237,234,224,0.35);line-height:1.75;text-align:center;">
+    <p style="margin-bottom:0.5rem;">
+      <strong style="color:rgba(237,234,224,0.55);font-weight:500;">Jean-Philippe Grimaud</strong> — Intermédiaire en opérations de banque et en services de paiement (IOBSP) · Intermédiaire en assurance (IAS) · Immatriculé à l'ORIAS sous le n° <strong style="color:rgba(237,234,224,0.55);font-weight:500;">12 066 117</strong> · Vérifiable sur <a href="https://www.orias.fr" target="_blank" rel="noopener" style="color:#c9a96e;text-decoration:none;">www.orias.fr</a>
+    </p>
+    <p style="margin-bottom:0.5rem;">
+      Mandataire exclusif de Pretto SAS via la SARL Jean Finance · Activité réglementée par l'<strong style="color:rgba(237,234,224,0.55);font-weight:500;">Autorité de Contrôle Prudentiel et de Résolution (ACPR)</strong>, 4 place de Budapest, 75436 Paris Cedex 09
+    </p>
+    <p style="margin-bottom:0.5rem;">
+      <strong style="color:rgba(237,234,224,0.55);font-weight:500;">Médiateur de la consommation :</strong> AME CONSO — <a href="https://www.mediateur-conso.conso.fr" target="_blank" rel="noopener" style="color:#c9a96e;text-decoration:none;">www.mediateur-conso.conso.fr</a> · Tél. 09 69 39 69 69
+    </p>
+    <p>
+      Aucun versement de quelque nature que ce soit ne peut être exigé d'un particulier avant l'obtention d'un ou plusieurs prêts d'argent. Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.
+    </p>
+  </div>
+</div>
 
 
 
