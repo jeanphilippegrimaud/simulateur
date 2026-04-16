@@ -1624,20 +1624,10 @@
 
     <!-- RÉSULTATS -->
     <div id="calc-result" style="display:none;margin-top:1.75rem;border-top:1px solid #d8d2c8;padding-top:1.5rem;">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#d8d2c8;border-radius:4px;overflow:hidden;margin-bottom:1.25rem;">
-        <div style="background:#4B6088;padding:1.1rem;text-align:center;">
-          <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(237,234,224,0.65);margin-bottom:0.35rem;">Mensualité max</div>
-          <div id="r-mensualite" style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:#edeae0;line-height:1;">—</div>
-          <div style="font-size:0.7rem;color:rgba(237,234,224,0.5);margin-top:0.2rem;">€ / mois</div>
-        </div>
-        <div style="background:#3d5276;padding:1.1rem;text-align:center;">
-          <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(237,234,224,0.65);margin-bottom:0.35rem;">Capital empruntable</div>
-          <div id="r-capital" style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:#c9a96e;line-height:1;">—</div>
-          <div style="font-size:0.7rem;color:rgba(237,234,224,0.5);margin-top:0.2rem;">€</div>
-        </div>
-        <div style="background:#2d3f5c;padding:1.1rem;text-align:center;">
+      <div style="max-width:260px;margin:0 auto 1.25rem;background:#3d5276;border-radius:4px;overflow:hidden;">
+        <div style="background:#3d5276;padding:1.4rem;text-align:center;">
           <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(237,234,224,0.65);margin-bottom:0.35rem;">Budget bien</div>
-          <div id="r-budget" style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:#c9a96e;line-height:1;">—</div>
+          <div id="r-budget" style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:600;color:#c9a96e;line-height:1;">—</div>
           <div style="font-size:0.7rem;color:rgba(237,234,224,0.5);margin-top:0.2rem;">€ (apport inclus)</div>
         </div>
       </div>
@@ -1795,14 +1785,9 @@ function calculer() {
   var coutTotal = mensMax * n - capital;
   var tauxEndettement = ((mensMax + charges) / revenus * 100);
 
-  document.getElementById('r-mensualite').textContent = fmt(mensMax);
-  document.getElementById('r-capital').textContent    = fmt(capital);
   document.getElementById('r-budget').textContent     = fmt(budget);
 
   document.getElementById('r-details').innerHTML =
-    '<strong>Taux d\'endettement :</strong> ' + tauxEndettement.toFixed(1) + '% (max 35%)<br>' +
-    '<strong>Reste à vivre :</strong> ' + fmt(revenus - mensMax - charges) + ' € / mois<br>' +
-    '' +
     '<strong>Frais de notaire estimés :</strong> ' + fmt(fraisNotaire) + ' € (~8% dans l\'ancien)<br>' +
     '<strong>Budget bien net de frais :</strong> ' + fmt(budgetNet) + ' €';
 
