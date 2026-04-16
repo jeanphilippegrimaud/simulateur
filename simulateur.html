@@ -12,13 +12,13 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #4B6088;
-    --navy-mid: #5a70a0;
+    --navy: #1a2d42;
+    --navy-mid: #243d56;
     --gold: #c9a96e;
     --gold-light: #e8d5b0;
     --cream: #f5f2eb;
     --white: #ffffff;
-    --text: #1e2d40;
+    --text: #1a2d42;
     --muted: #5a7288;
   }
 
@@ -532,7 +532,7 @@
 </div>
 
 <!-- MENTIONS LÉGALES -->
-<div style="background:#1e2d40;padding:1.5rem 3rem;border-top:1px solid rgba(201,169,110,0.1);">
+<div style="background:#1a2a3d;padding:1.5rem 3rem;border-top:1px solid rgba(201,169,110,0.1);">
   <div style="max-width:860px;margin:0 auto;font-family:'DM Sans',sans-serif;font-size:0.60rem;color:rgba(237,234,224,0.35);line-height:1.75;text-align:center;">
     <p style="margin-bottom:0.5rem;">
       <strong style="color:rgba(237,234,224,0.55);font-weight:500;">Jean-Philippe Grimaud</strong> — Intermédiaire en opérations de banque et en services de paiement (IOBSP) · Intermédiaire en assurance (IAS) · Immatriculé à l'ORIAS sous le n° <strong style="color:rgba(237,234,224,0.55);">12 066 117</strong> · Vérifiable sur <a href="https://www.orias.fr" target="_blank" rel="noopener" style="color:#c9a96e;text-decoration:none;">www.orias.fr</a>
@@ -608,8 +608,11 @@ function simCalc() {
   var rlv = rev - mens - chg;
   var cout = mens * n - cap;
 
-  document.getElementById('r-bud').textContent = fmt(bud) + ' €';
-  document.getElementById('r-det').innerHTML = '';
+  document.getElementById('r-bud').textContent  = fmt(bud)  + ' €';
+  document.getElementById('r-det').innerHTML =
+    '✔ Taux d\'endettement : <strong>' + (rev > 0 ? ((mens + chg)/rev*100).toFixed(1) : 0) + '%</strong><br>' +
+    '✔ Frais de notaire estimés : <strong>' + fmt(frais) + ' €</strong> &nbsp;|&nbsp; ' +
+    'Budget net : <strong>' + fmt(bud - frais) + ' €</strong>';
 
   results.classList.add('show');
 }
