@@ -608,11 +608,8 @@ function simCalc() {
   var rlv = rev - mens - chg;
   var cout = mens * n - cap;
 
-  document.getElementById('r-bud').textContent  = fmt(bud)  + ' €';
-  document.getElementById('r-det').innerHTML =
-    '✔ Taux d\'endettement : <strong>' + (rev > 0 ? ((mens + chg)/rev*100).toFixed(1) : 0) + '%</strong><br>' +
-    '✔ Frais de notaire estimés : <strong>' + fmt(frais) + ' €</strong> &nbsp;|&nbsp; ' +
-    'Budget net : <strong>' + fmt(bud - frais) + ' €</strong>';
+  document.getElementById('r-bud').textContent = fmt(bud) + ' €';
+  document.getElementById('r-det').innerHTML = '';
 
   results.classList.add('show');
 }
