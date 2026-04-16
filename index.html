@@ -467,7 +467,9 @@
     .values-grid { grid-template-columns: 1fr; }
     .numbers-grid { grid-template-columns: repeat(2, 1fr); }
     .territory-inner { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem 1.25rem; }
+    .footer-logo { font-size: 0.85rem; }
+    .footer-text { font-size: 0.68rem; white-space: nowrap; }
   }
 </style>
 </head>
@@ -512,7 +514,7 @@
     </p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Démarrer mon projet</a>
-      <a href="#etapes" class="btn-secondary">Comment ça marche ?</a>
+      <a href="#avis" class="btn-secondary">Lire les avis ★</a>
     </div>
     <div style="margin-top:1rem;">
       <a href="#mentor" style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:rgba(237,234,224,0.55);text-decoration:none;font-weight:300;letter-spacing:0.04em;border-bottom:1px solid rgba(201,169,110,0.3);padding-bottom:2px;transition:color 0.2s;" onmouseover="this.style.color='#c9a96e'" onmouseout="this.style.color='rgba(237,234,224,0.55)'">
@@ -1125,6 +1127,18 @@
       </div>
     </div>
 
+    <div class="avis-card">
+      <div class="avis-stars">★★★★★</div>
+      <p class="avis-texte">Jean-Philippe m'a accompagnée à toutes les étapes de mon projet : constitution de mon dossier, conseil sur le bien, sur les propositions de prêts qu'il a obtenues pour moi, jusqu'à la signature à la banque ! Toujours avec un grand professionnalisme. Le vendeur a été rassuré par le fait que j'étais accompagnée par un courtier — il était sûr que j'obtiendrais mon prêt. C'est mon dossier qui l'a emporté. Et moi j'étais totalement confiante sur ma capacité d'emprunt grâce à l'étude de ma situation par Jean-Philippe.</p>
+      <div class="avis-auteur">
+        <div class="avis-initiales">MS</div>
+        <div>
+          <div class="avis-nom">Marie S.</div>
+          <div class="avis-date">Investissement locatif · 2024</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <p style="font-size:0.78rem;color:var(--text-light);text-align:center;margin-top:2rem;font-style:italic;">* Ces avis sont issus de retours clients recueillis directement par Jean-Philippe Grimaud.</p>
@@ -1469,7 +1483,7 @@
         <div style="font-size:0.85rem;font-weight:500;color:#edeae0;margin-bottom:0.5rem;">Un échange sans engagement</div>
         <div style="font-size:0.78rem;color:rgba(237,234,224,0.5);line-height:1.65;font-weight:300;margin-bottom:1.25rem;">Tu es curieux, en réflexion ou prêt à te lancer ? Parlons-en autour d'un café ou par téléphone — je te partage mon expérience en toute transparence.</div>
         <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-          <a href="tel:+33660146188" class="btn-primary" style="font-size:0.78rem;padding:0.7rem 1.4rem;">Appelle le 06 60 14 61 88</a>
+          <a href="tel:+33660146188" class="btn-primary" style="font-size:0.78rem;padding:0.7rem 1.4rem;white-space:nowrap;">📞 06 60 14 61 88</a>
           <button onclick="ouvrirContact()" style="font-size:0.78rem;padding:0.7rem 1.4rem;border-color:rgba(237,234,224,0.25);color:rgba(237,234,224,0.75);background:transparent;border:1px solid rgba(237,234,224,0.25);border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.06em;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor='#c9a96e';this.style.color='#c9a96e'" onmouseout="this.style.borderColor='rgba(237,234,224,0.25)';this.style.color='rgba(237,234,224,0.75)'">M'écrire</button>
         </div>
       </div>
@@ -1510,7 +1524,7 @@
   </div>
 
   <div class="contact-actions">
-    <a href="tel:+33660146188" class="btn-primary">Appeler le 06 60 14 61 88</a>
+    <a href="tel:+33660146188" class="btn-primary" style="white-space:nowrap;">📞 Appeler le 06 60 14 61 88</a>
     <button onclick="ouvrirContact()" class="btn-secondary" style="cursor:pointer;font-family:'DM Sans',sans-serif;">Envoyer un message</button>
   </div>
 </section>
