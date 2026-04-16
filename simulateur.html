@@ -554,7 +554,7 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // 🔧 REMPLACEZ CETTE URL PAR VOTRE URL GOOGLE APPS SCRIPT
-var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTqyN3BtT_ObkXyLhCLvrctoftlsVfHAArUr2n-XWloiF8lgeOgoZOwo6pXKbQ4swaOA/exec';
+var GOOGLE_SCRIPT_URL = 'https://api.web3forms.com/submit';
 
 function fmt(n) {
   return parseInt(n).toLocaleString('fr-FR');
@@ -638,12 +638,13 @@ async function sendLead() {
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({
+        access_key:'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom:nom, telephone:tel, email:email,
         projet:projet, profil:profil,
         revenus:rev+' €/mois', charges:chg+' €/mois',
         apport:apt+' €', duree:dur+' ans',
         budget_bien:bud+' €',
-        _subject:'Nouvelle demande étude — '+nom
+        subject:'Nouvelle demande étude — '+nom
       })
     });
     if(res.ok){

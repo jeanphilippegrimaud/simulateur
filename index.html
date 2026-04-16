@@ -1651,7 +1651,7 @@
 
 <script>
 // 🔧 REMPLACEZ CETTE URL PAR VOTRE URL GOOGLE APPS SCRIPT
-var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTqyN3BtT_ObkXyLhCLvrctoftlsVfHAArUr2n-XWloiF8lgeOgoZOwo6pXKbQ4swaOA/exec';
+var GOOGLE_SCRIPT_URL = 'https://api.web3forms.com/submit';
 
 function openCalc() {
   var o = document.getElementById('calc-overlay');
@@ -1685,9 +1685,10 @@ async function validerLead() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
+        access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom: nom, telephone: tel, email: email, projet: projet,
         source: 'Site principal — calculette',
-        _subject: 'Nouveau lead simulateur — ' + nom
+        subject: 'Nouveau lead simulateur — ' + nom
       })
     });
     document.getElementById('lead-recap').textContent = 'Bonjour ' + nom + ' — simulation en cours';
@@ -1722,11 +1723,12 @@ async function demanderEtude() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
+        access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom: nom, telephone: tel, email: email, projet: projet,
         revenus: rev + ' €/mois', charges: chg + ' €/mois',
         apport: apt + ' €', duree: dur + ' ans',
         source: source,
-        _subject: 'Demande étude ' + source + ' — ' + nom
+        subject: 'Demande étude ' + source + ' — ' + nom
       })
     });
     if (res.ok) {
@@ -1904,10 +1906,11 @@ async function envoyerContact() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
+        access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom: nom, telephone: tel || 'NC', email: email,
         message: msg,
         source: 'Site principal — formulaire contact',
-        _subject: 'Message de ' + nom
+        subject: 'Message de ' + nom
       })
     });
     if (res.ok) {
