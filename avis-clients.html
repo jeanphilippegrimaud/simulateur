@@ -185,19 +185,6 @@
   <div class="card">
     <div id="form-content">
 
-      <!-- NOTE ÉTOILES -->
-      <div class="stars-section">
-        <span class="stars-label">Votre note globale *</span>
-        <div class="stars" id="stars">
-          <span class="star" data-val="1">★</span>
-          <span class="star" data-val="2">★</span>
-          <span class="star" data-val="3">★</span>
-          <span class="star" data-val="4">★</span>
-          <span class="star" data-val="5">★</span>
-        </div>
-        <div class="star-label" id="star-label">Cliquez pour noter</div>
-      </div>
-
       <!-- COORDONNÉES -->
       <div class="field-row">
         <div class="field">
@@ -245,7 +232,7 @@
         <div class="autorisation-title">📋 Autorisation de diffusion</div>
         <label class="checkbox-line">
           <input type="checkbox" id="auth-site">
-          <span>J'autorise Jean-Philippe Grimaud à publier mon avis sur <strong>son site internet</strong> (jean-finance-pretto.netlify.app)</span>
+          <span>J'autorise Jean-Philippe Grimaud à publier mon avis sur <strong>son site internet</strong></span>
         </label>
         <label class="checkbox-line">
           <input type="checkbox" id="auth-rs">
@@ -255,6 +242,19 @@
           <input type="checkbox" id="auth-anon">
           <span>Je préfère que mon avis soit publié <strong>de façon anonyme</strong> (initiales uniquement)</span>
         </label>
+      </div>
+
+      <!-- NOTE ÉTOILES — en fin de formulaire -->
+      <div class="stars-section" style="margin-top:1.5rem;text-align:center;">
+        <span class="stars-label">Votre note globale *</span>
+        <div class="stars" id="stars" style="justify-content:center;">
+          <span class="star" data-val="1">★</span>
+          <span class="star" data-val="2">★</span>
+          <span class="star" data-val="3">★</span>
+          <span class="star" data-val="4">★</span>
+          <span class="star" data-val="5">★</span>
+        </div>
+        <div class="star-label" id="star-label">Cliquez pour noter</div>
       </div>
 
       <div id="form-error" class="error-msg"></div>
@@ -344,23 +344,35 @@ async function envoyerAvis() {
   var btn = document.querySelector('.btn-submit');
   btn.textContent = 'Envoi en cours...'; btn.disabled = true;
 
+  var etoiles = '★'.repeat(note) + '☆'.repeat(5 - note);
+  var recoLabels = {
+    'oui_certain': 'Oui, certainement !',
+    'oui_probablement': 'Oui, probablement',
+    'peut_etre': 'Peut-être',
+    'non': 'Non'
+  };
+
   try {
     var res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
-        type: 'AVIS CLIENT',
-        nom: nom,
-        note: note + '/5 — ' + labels[note],
-        annee_achat: annee,
-        temoignage: avis,
-        point_fort: point,
-        recommandation: reco,
-        autorisation_site: authSite,
-        autorisation_reseaux: authRS,
-        anonymat_souhaite: authAnon,
-        subject: '⭐ Nouvel avis ' + note + '/5 — ' + nom
+        subject: '⭐ Nouvel avis ' + note + '/5 — ' + nom,
+        message:
+          '╔══════════════════════════════════╗\n' +
+          '   NOUVEL AVIS CLIENT — JEAN FINANCE\n' +
+          '╚══════════════════════════════════╝\n\n' +
+          '👤 NOM : ' + nom + '\n' +
+          '📅 ANNÉE D\'ACHAT : ' + (annee || 'Non précisée') + '\n' +
+          '⭐ NOTE : ' + etoiles + ' (' + note + '/5 — ' + labels[note] + ')\n\n' +
+          '💬 TÉMOIGNAGE :\n' + avis + '\n\n' +
+          '✅ POINT FORT : ' + (point || 'Non précisé') + '\n\n' +
+          '👍 RECOMMANDATION : ' + (recoLabels[reco] || 'Non précisée') + '\n\n' +
+          '📋 AUTORISATIONS :\n' +
+          '  • Publication site : ' + authSite + '\n' +
+          '  • Publication réseaux : ' + authRS + '\n' +
+          '  • Anonymat souhaité : ' + authAnon + '\n'
       })
     });
     if (res.ok) {
