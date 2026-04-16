@@ -345,10 +345,11 @@ async function envoyerAvis() {
   btn.textContent = 'Envoi en cours...'; btn.disabled = true;
 
   try {
-    var res = await fetch('https://formspree.io/f/mvzdoeyb', {
+    var res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
+        access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         type: 'AVIS CLIENT',
         nom: nom,
         note: note + '/5 — ' + labels[note],
@@ -359,7 +360,7 @@ async function envoyerAvis() {
         autorisation_site: authSite,
         autorisation_reseaux: authRS,
         anonymat_souhaite: authAnon,
-        _subject: '⭐ Nouvel avis ' + note + '/5 — ' + nom
+        subject: '⭐ Nouvel avis ' + note + '/5 — ' + nom
       })
     });
     if (res.ok) {
