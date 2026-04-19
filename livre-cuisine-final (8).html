@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Livre de Cuisine</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu:#5B7199; --bleu-dark:#4B6088; --bleu-mid:#6880a8;
+    --or:#c9a96e; --or-light:#d9be8a; --or-pale:rgba(201,169,110,0.15);
+    --creme:#edeae0; --creme-doux:#c8c4b8; --creme-discret:#8d99a8;
+    --ligne:rgba(201,169,110,0.22);
+    --m-bg:#f5f2ea; --m-bg2:#ece8de; --m-texte:#2a2520;
+    --m-texte2:#5a5248; --m-texte3:#8a7f72;
+    --m-ligne:rgba(180,160,120,0.25); --m-border:rgba(180,160,120,0.3); --m-or:#a07840;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Quicksand',sans-serif;background:var(--bleu);min-height:100vh;color:var(--creme);}
+
+  /* HEADER */
+  .header{background:var(--bleu-dark);padding:2.5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 15% 40%,rgba(201,169,110,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 90% 15%,rgba(201,169,110,0.08) 0%,transparent 55%);pointer-events:none;}
+  .header::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(201,169,110,0.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+  .header-eyebrow{font-size:0.65rem;letter-spacing:0.45em;text-transform:uppercase;color:var(--or);margin-bottom:0.75rem;position:relative;z-index:1;}
+  .header-title{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--creme);position:relative;z-index:1;}
+  .header-title em{font-style:italic;color:var(--or);}
+  .header-div{display:flex;align-items:center;justify-content:center;gap:0.75rem;margin:1rem auto 0.6rem;max-width:250px;position:relative;z-index:1;}
+  .header-div::before,.header-div::after{content:'';flex:1;height:1px;background:var(--or);opacity:0.35;}
+  .header-div span{color:var(--or);}
+  .header-sub{font-size:0.72rem;color:var(--creme-discret);letter-spacing:0.2em;text-transform:uppercase;position:relative;z-index:1;}
+
+  /* CONTROLS */
+  .controls{background:var(--bleu-dark);border-bottom:1px solid var(--ligne);padding:0.9rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:50;box-shadow:0 4px 18px rgba(30,40,55,0.25);}
+  .search-pill{display:flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.08);border:1px solid var(--ligne);border-radius:50px;padding:0.55rem 1.2rem;flex:1;min-width:180px;transition:border-color 0.2s;}
+  .search-pill:focus-within{border-color:rgba(201,169,110,0.5);}
+  .search-pill input{border:none;outline:none;background:transparent;font-family:'Quicksand',sans-serif;font-size:0.9rem;font-weight:500;color:var(--creme);flex:1;}
+  .search-pill input::placeholder{color:var(--creme-discret);opacity:0.7;}
+  .search-pill span{color:var(--or);opacity:0.7;}
+  .filter-pills{display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .fpill{border:1px solid var(--ligne);border-radius:50px;padding:0.4rem 0.9rem;font-family:'Quicksand',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;background:transparent;color:var(--creme-discret);transition:all 0.2s;}
+  .fpill:hover{border-color:var(--or);color:var(--or);}
+  .fpill.active{background:var(--or);color:var(--bleu-dark);border-color:var(--or);}
+
+  /* STATS */
+  .stats-row{padding:0.5rem 1.5rem;display:flex;gap:1.5rem;font-size:0.7rem;font-weight:600;color:var(--creme-discret);border-bottom:1px solid var(--ligne);background:rgba(75,96,136,0.6);flex-wrap:wrap;}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle;}
+
+  /* MAIN */
+  main{max-width:1060px;margin:0 auto;padding:2rem 1.25rem 8rem;}
+  .section-head{display:flex;align-items:center;gap:1rem;margin:2.5rem 0 1.25rem;}
+  .section-head h2{font-family:'Libre Baskerville',serif;font-size:1.25rem;font-style:italic;color:var(--or);white-space:nowrap;}
+  .section-head::after{content:'';flex:1;height:1px;background:var(--ligne);}
+
+  /* CARDS */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;}
+  .card{background:var(--creme);border-radius:14px;overflow:hidden;transition:transform 0.22s,box-shadow 0.22s;animation:bloom 0.4s ease both;}
+  @keyframes bloom{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 38px rgba(30,40,55,0.4);}
+  .card-img{height:165px;position:relative;overflow:hidden;background:#d8d4cc;display:flex;align-items:center;justify-content:center;font-size:3.2rem;cursor:pointer;}
+  .card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .card-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(80,70,60,0.3));}
+  .card-badge{position:absolute;top:0.65rem;left:0.65rem;padding:0.2rem 0.65rem;border-radius:50px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#fff;}
+  .card-badge.entree{background:rgba(90,160,125,0.92);}
+  .card-badge.plat{background:rgba(180,140,70,0.92);}
+  .card-badge.dessert{background:rgba(170,100,140,0.92);}
+  .card-badge.thermomix{background:rgba(60,110,180,0.92);}
+  .card-body{padding:0.85rem 1.05rem 0.95rem;background:var(--creme);}
+  .card-cat{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.22rem;}
+  .card-cat.entree{color:#3a7a5a;}.card-cat.plat{color:#7a5a20;}.card-cat.dessert{color:#7a3060;}.card-cat.thermomix{color:#2a5888;}
+  .card-name{font-family:'Libre Baskerville',serif;font-size:1.02rem;color:#2a2520;margin-bottom:0.22rem;line-height:1.2;cursor:pointer;}
+  .card-meta{font-size:0.7rem;color:#7a6e62;display:flex;gap:0.8rem;margin-bottom:0.38rem;font-weight:600;}
+  .card-desc{font-size:0.76rem;color:#5a5248;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-style:italic;}
+  .card-edit-btn{display:flex;align-items:center;gap:0.28rem;margin-top:0.6rem;padding:0.3rem 0.65rem;border:1px solid rgba(160,120,60,0.4);border-radius:50px;background:transparent;font-family:'Quicksand',sans-serif;font-size:0.68rem;font-weight:700;color:#8a6a30;cursor:pointer;width:fit-content;transition:all 0.18s;}
+  .card-edit-btn:hover{background:var(--or);color:#fff;border-color:var(--or);}
+
+  /* BOUTONS FIXES */
+  .fab-group{position:fixed;bottom:1.5rem;right:1.5rem;display:flex;flex-direction:column;gap:0.6rem;z-index:100;align-items:flex-end;}
+  .fab{background:linear-gradient(135deg,var(--or),var(--or-light));color:var(--bleu-dark);border:none;border-radius:50px;padding:0.85rem 1.4rem;font-family:'Quicksand',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;box-shadow:0 6px 25px rgba(201,169,110,0.4);transition:all 0.22s;white-space:nowrap;}
+  .fab:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(201,169,110,0.5);}
+  .fab-scan{background:linear-gradient(135deg,#5B7199,#6880a8);color:#fff;box-shadow:0 6px 25px rgba(75,96,136,0.4);}
+  .fab-scan:hover{box-shadow:0 10px 30px rgba(75,96,136,0.5);}
+  .print-btn{position:fixed;bottom:1.5rem;left:1.5rem;background:transparent;color:var(--or);border:1px solid rgba(201,169,110,0.4);border-radius:50px;padding:0.75rem 1.2rem;font-family:'Quicksand',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;z-index:100;transition:all 0.2s;}
+  .print-btn:hover{background:var(--or-pale);}
+
+  /* OVERLAY */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(20,30,45,0.72);backdrop-filter:blur(7px);z-index:200;align-items:flex-start;justify-content:center;padding:1.5rem 1rem;overflow-y:auto;}
+  .overlay.open{display:flex;}
+
+  /* MODAL */
+  .modal{background:var(--m-bg);border:1px solid var(--m-border);border-radius:18px;padding:2rem;max-width:560px;width:100%;margin:auto;box-shadow:0 30px 80px rgba(15,25,40,0.5);animation:slideUp 0.3s ease;color:var(--m-texte);}
+  @keyframes slideUp{from{transform:translateY(28px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal h2{font-family:'Libre Baskerville',serif;font-size:1.35rem;font-style:italic;color:var(--m-or);margin-bottom:1.3rem;border-bottom:1px solid var(--m-ligne);padding-bottom:0.65rem;}
+  .form-group{margin-bottom:0.85rem;}
+  .form-group label{display:block;font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--m-texte3);margin-bottom:0.28rem;}
+  .form-group input,.form-group textarea,.form-group select{width:100%;padding:0.58rem 0.9rem;border:1.5px solid var(--m-border);border-radius:10px;font-family:'Quicksand',sans-serif;font-size:0.87rem;font-weight:500;color:var(--m-texte);outline:none;background:#fff;transition:border-color 0.2s,box-shadow 0.2s;}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(160,120,60,0.6);box-shadow:0 0 0 3px rgba(201,169,110,0.1);}
+  .form-group input::placeholder,.form-group textarea::placeholder{color:var(--m-texte3);opacity:0.6;}
+  .form-group textarea{min-height:72px;resize:vertical;line-height:1.5;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+
+  /* SCAN MODAL */
+  .scan-drop{border:3px dashed rgba(91,113,153,0.4);border-radius:14px;padding:2rem 1.5rem;text-align:center;background:rgba(91,113,153,0.06);cursor:pointer;position:relative;transition:all 0.2s;}
+  .scan-drop:hover,.scan-drop.drag{border-color:var(--bleu);background:rgba(91,113,153,0.12);}
+  .scan-drop input[type=file]{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+  .scan-drop-icon{font-size:2.5rem;margin-bottom:0.5rem;}
+  .scan-drop-text{font-size:0.88rem;color:var(--m-texte2);font-weight:600;margin-bottom:0.2rem;}
+  .scan-drop-sub{font-size:0.72rem;color:var(--m-texte3);}
+  .scan-preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;margin-top:0.75rem;display:none;}
+  .scan-preview.show{display:block;}
+  .scan-status{margin-top:1rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.85rem;font-weight:600;display:none;}
+  .scan-status.loading{display:block;background:rgba(91,113,153,0.12);color:var(--bleu-dark);}
+  .scan-status.success{display:block;background:rgba(90,160,125,0.12);color:#2a6a48;}
+  .scan-status.error{display:block;background:rgba(180,60,60,0.1);color:#8a3030;}
+
+  /* PHOTO SECTION */
+  .photo-section{margin-bottom:0.85rem;}
+  .photo-section>label{display:block;font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--m-texte3);margin-bottom:0.48rem;}
+  .photo-preview-wrap{position:relative;width:100%;height:135px;border-radius:10px;overflow:hidden;margin-bottom:0.6rem;background:var(--m-bg2);display:none;align-items:center;justify-content:center;}
+  .photo-preview-wrap.show{display:flex;}
+  .photo-preview-wrap img{width:100%;height:100%;object-fit:cover;}
+  .photo-remove-btn{position:absolute;top:0.4rem;right:0.4rem;background:rgba(160,50,50,0.85);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:0.78rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .photo-tabs{display:flex;border-radius:10px;overflow:hidden;border:1.5px solid var(--m-border);margin-bottom:0.55rem;}
+  .photo-tab{flex:1;padding:0.48rem;font-family:'Quicksand',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;background:var(--m-bg2);color:var(--m-texte3);border:none;transition:all 0.18s;text-align:center;}
+  .photo-tab.active{background:var(--m-or);color:#fff;}
+  .upload-zone{position:relative;border:2px dashed rgba(160,120,60,0.35);border-radius:10px;padding:1rem;text-align:center;background:var(--m-bg2);transition:all 0.2s;cursor:pointer;}
+  .upload-zone:hover{border-color:var(--m-or);background:#e5dfd4;}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+  .upload-zone-icon{font-size:1.5rem;margin-bottom:0.2rem;}
+  .upload-zone-text{font-size:0.78rem;color:var(--m-texte2);font-weight:600;}
+  .upload-zone-sub{font-size:0.68rem;color:var(--m-texte3);margin-top:0.12rem;}
+  .url-zone{display:flex;gap:0.5rem;}
+  .url-zone input{flex:1;padding:0.58rem 0.9rem;border:1.5px solid var(--m-border);border-radius:10px;font-family:'Quicksand',sans-serif;font-size:0.84rem;color:var(--m-texte);background:#fff;outline:none;}
+  .url-zone-btn{padding:0.58rem 0.95rem;background:var(--m-or);color:#fff;border:none;border-radius:10px;font-family:'Quicksand',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .photo-hint{font-size:0.67rem;color:var(--m-texte3);margin-top:0.38rem;line-height:1.4;font-style:italic;}
+
+  /* BOUTONS MODAL */
+  .modal-actions{display:flex;gap:0.65rem;margin-top:1.3rem;padding-top:0.95rem;border-top:1px solid var(--m-ligne);}
+  .btn-save{flex:1;padding:0.8rem;background:linear-gradient(135deg,var(--or),var(--or-light));color:#fff;border:none;border-radius:12px;font-family:'Quicksand',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;}
+  .btn-cancel{padding:0.8rem 1.05rem;background:transparent;color:var(--m-texte2);border:1.5px solid var(--m-border);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:0.86rem;cursor:pointer;}
+  .btn-delete{padding:0.72rem 0.95rem;background:#fff0f0;color:#b54040;border:1.5px solid rgba(180,60,60,0.25);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:0.83rem;font-weight:700;cursor:pointer;}
+  .btn-edit{padding:0.8rem 1.15rem;background:var(--m-bg2);color:var(--m-or);border:1.5px solid rgba(160,120,60,0.35);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:0.86rem;font-weight:700;cursor:pointer;}
+  .btn-edit:hover{background:var(--or);color:#fff;border-color:var(--or);}
+  .btn-full{width:100%;padding:0.85rem;background:linear-gradient(135deg,var(--bleu),var(--bleu-mid));color:#fff;border:none;border-radius:12px;font-family:'Quicksand',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:0.75rem;}
+  .btn-full:hover{filter:brightness(1.08);}
+  .btn-full:disabled{opacity:0.5;cursor:not-allowed;}
+
+  /* DÉTAIL */
+  .detail-img-wrap{width:100%;height:210px;border-radius:12px;overflow:hidden;margin-bottom:1.15rem;background:var(--m-bg2);display:flex;align-items:center;justify-content:center;font-size:4.5rem;}
+  .detail-img-wrap img{width:100%;height:100%;object-fit:cover;}
+  .detail-badge{display:inline-block;padding:0.22rem 0.75rem;border-radius:50px;font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.45rem;}
+  .detail-badge.entree{background:rgba(90,160,125,0.15);color:#2a6a48;border:1px solid rgba(90,160,125,0.3);}
+  .detail-badge.plat{background:rgba(160,120,40,0.12);color:#7a5a20;border:1px solid rgba(160,120,40,0.3);}
+  .detail-badge.dessert{background:rgba(160,80,120,0.12);color:#7a3060;border:1px solid rgba(160,80,120,0.3);}
+  .detail-badge.thermomix{background:rgba(40,90,160,0.12);color:#2a5888;border:1px solid rgba(40,90,160,0.3);}
+  .detail-name{font-family:'Libre Baskerville',serif;font-size:1.7rem;color:var(--m-texte);margin-bottom:0.38rem;line-height:1.12;}
+  .detail-meta{font-size:0.78rem;color:var(--m-texte3);display:flex;gap:1.5rem;margin-bottom:1rem;font-weight:600;padding-bottom:0.85rem;border-bottom:1px solid var(--m-ligne);}
+  .detail-desc-text{font-size:0.9rem;color:var(--m-texte2);font-style:italic;line-height:1.58;padding:0.55rem 0.85rem;background:var(--m-bg2);border-radius:8px;margin-bottom:0.85rem;}
+  .detail-sec{margin-bottom:0.95rem;}
+  .detail-sec h3{font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:var(--m-or);margin-bottom:0.35rem;display:flex;align-items:center;gap:0.4rem;}
+  .detail-sec h3::after{content:'';flex:1;height:1px;background:rgba(160,120,60,0.2);}
+  .detail-sec p{font-size:0.88rem;color:var(--m-texte2);line-height:1.72;white-space:pre-line;background:var(--m-bg2);padding:0.7rem 0.95rem;border-radius:8px;border-left:3px solid rgba(201,169,110,0.4);}
+  .detail-actions{display:flex;gap:0.65rem;margin-top:1.25rem;padding-top:0.95rem;border-top:1px solid var(--m-ligne);}
+  .empty{text-align:center;padding:3.5rem;color:var(--creme-discret);font-family:'Libre Baskerville',serif;font-style:italic;font-size:1.05rem;}
+
+  /* IMPRESSION */
+  #printArea{display:none;}
+  @media print{
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+    body>*:not(#printArea){display:none!important;}
+    #printArea{display:block!important;}
+    .p-cover{text-align:center;padding:4rem 2rem;page-break-after:always;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#4B6088;}
+    .p-cover h1{font-family:'Libre Baskerville',serif;font-size:3rem;font-style:italic;color:#c9a96e;margin-bottom:0.5rem;}
+    .p-cover .sub{color:#8d99a8;font-size:0.78rem;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:2.5rem;}
+    .p-cover-stats{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;}
+    .p-cover-stat{background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:1rem;padding:0.9rem 1.4rem;color:#c9a96e;font-weight:700;text-align:center;}
+    .p-cover-stat strong{display:block;font-family:'Libre Baskerville',serif;font-size:2rem;font-style:italic;}
+    .p-toc{padding:2rem;page-break-after:always;background:#f5f2ea;}
+    .p-toc h2{font-family:'Libre Baskerville',serif;font-size:1.7rem;font-style:italic;color:#a07840;margin-bottom:1.4rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(160,120,60,0.2);}
+    .p-toc-row{display:flex;align-items:center;justify-content:space-between;padding:0.42rem 0;border-bottom:1px dotted rgba(160,120,60,0.15);font-size:0.88rem;font-weight:600;color:#2a2520;}
+    .p-badge{font-size:0.62rem;font-weight:700;text-transform:uppercase;padding:0.16rem 0.55rem;border-radius:0.5rem;}
+    .p-badge.entree{background:rgba(90,160,125,0.15);color:#2a6a48;}.p-badge.plat{background:rgba(160,120,40,0.12);color:#7a5a20;}.p-badge.dessert{background:rgba(160,80,120,0.12);color:#7a3060;}.p-badge.thermomix{background:rgba(40,90,160,0.12);color:#2a5888;}
+    .p-section{padding:2rem;page-break-before:always;background:#f5f2ea;}
+    .p-section-h{font-family:'Libre Baskerville',serif;font-size:1.6rem;font-style:italic;color:#a07840;padding:0.7rem 1.4rem;border-left:4px solid #c9a96e;margin-bottom:1.4rem;background:#ece8de;border-radius:0 8px 8px 0;}
+    .p-recipe{page-break-inside:avoid;margin-bottom:1.6rem;padding:1.2rem 1.4rem;border:1px solid rgba(160,120,60,0.2);border-radius:0.7rem;background:#fff;}
+    .p-r-head{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.45rem;}
+    .p-r-name{font-size:1.2rem;font-weight:700;color:#2a2520;}
+    .p-r-meta{font-size:0.75rem;color:#8a7f72;font-weight:600;margin-bottom:0.7rem;display:flex;gap:1.4rem;}
+    .p-r-desc{font-size:0.85rem;color:#5a5248;font-style:italic;margin-bottom:0.7rem;padding-bottom:0.7rem;border-bottom:1px solid rgba(160,120,60,0.15);}
+    .p-recipe h4{font-size:0.66rem;text-transform:uppercase;letter-spacing:0.12em;color:#a07840;font-weight:700;margin:0.7rem 0 0.28rem;}
+    .p-recipe p{font-size:0.85rem;color:#3a3028;line-height:1.62;white-space:pre-line;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">✦ Ma Collection Culinaire ✦</div>
+  <h1 class="header-title">Mon <em>Livre</em> de Cuisine</h1>
+  <div class="header-div"><span>❧</span></div>
+  <p class="header-sub">Entrées · Plats · Desserts · Thermomix</p>
+</div>
+
+<div class="controls">
+  <div class="search-pill">
+    <span>✦</span>
+    <input type="text" id="searchInput" placeholder="Rechercher une recette, un ingrédient…" oninput="renderAll()">
+  </div>
+  <div class="filter-pills" id="filterPills"></div>
+</div>
+
+<div class="stats-row" id="stats"></div>
+<main><div id="recipeContainer"></div></main>
+
+<div class="fab-group">
+  <button class="fab fab-scan" onclick="openScanModal()">📷 Scanner une recette</button>
+  <button class="fab" onclick="openAddModal()">＋ Ajouter manuellement</button>
+</div>
+<button class="print-btn" onclick="printBook()">🖨️ Imprimer</button>
+<div id="printArea"></div>
+
+<!-- MODAL SCAN IA -->
+<div class="overlay" id="scanOverlay" onclick="closeOnOverlay(event,'scanOverlay')">
+  <div class="modal">
+    <h2>📷 Scanner une recette</h2>
+    <p style="font-size:0.85rem;color:var(--m-texte2);margin-bottom:1rem;line-height:1.5">Prenez en photo votre recette (écrite, imprimée ou sur écran) — l'IA la lit et remplit automatiquement tous les champs !</p>
+
+    <div class="scan-drop" id="scanDrop">
+      <input type="file" id="scanFile" accept="image/*" onchange="handleScanFile(event)">
+      <div class="scan-drop-icon">📄</div>
+      <div class="scan-drop-text">Cliquez ou glissez votre photo ici</div>
+      <div class="scan-drop-sub">Photo d'une recette manuscrite, imprimée, ou écran</div>
+      <img id="scanPreview" class="scan-preview" alt="Aperçu">
+    </div>
+
+    <div class="scan-status" id="scanStatus"></div>
+
+    <button class="btn-full" id="btnAnalyze" onclick="analyzeRecipe()" disabled>🔍 Analyser et extraire la recette</button>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('scanOverlay')">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FORMULAIRE -->
+<div class="overlay" id="formOverlay" onclick="closeOnOverlay(event,'formOverlay')">
+  <div class="modal">
+    <h2 id="formTitle">✦ Nouvelle recette</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Nom de la recette</label><input type="text" id="fName" placeholder="Ex: Bœuf Bourguignon…"></div>
+      <div class="form-group"><label>Catégorie</label>
+        <select id="fCat">
+          <option value="entree">🥗 Entrée</option>
+          <option value="plat">🍽️ Plat</option>
+          <option value="dessert">🌸 Dessert</option>
+          <option value="thermomix">⚙️ Thermomix</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>⏱ Temps</label><input type="text" id="fTime" placeholder="Ex: 45 min"></div>
+      <div class="form-group"><label>👥 Personnes</label><input type="text" id="fServings" placeholder="Ex: 4 personnes"></div>
+    </div>
+    <div class="photo-section">
+      <label>📷 Photo de la recette</label>
+      <div class="photo-preview-wrap" id="photoPreviewWrap">
+        <img id="photoPreviewImg" src="" alt="">
+        <button class="photo-remove-btn" onclick="removePhoto()">✕</button>
+      </div>
+      <div class="photo-tabs">
+        <button class="photo-tab active" id="tabUpload" onclick="switchTab('upload')">📁 Mon ordi</button>
+        <button class="photo-tab" id="tabUrl" onclick="switchTab('url')">🔗 URL</button>
+      </div>
+      <div id="zoneUpload">
+        <div class="upload-zone">
+          <input type="file" id="fPhotoFile" accept="image/*" onchange="handleFileUpload(event)">
+          <div class="upload-zone-icon">📷</div>
+          <div class="upload-zone-text">Cliquez ou glissez votre photo</div>
+          <div class="upload-zone-sub">JPG, PNG, WEBP</div>
+        </div>
+      </div>
+      <div id="zoneUrl" style="display:none">
+        <div class="url-zone">
+          <input type="text" id="fPhotoUrl" placeholder="https://…">
+          <button class="url-zone-btn" onclick="applyUrl()">OK</button>
+        </div>
+        <p class="photo-hint">Clic droit sur une image → "Copier l'adresse de l'image"</p>
+      </div>
+    </div>
+    <div class="form-group"><label>Description courte</label><input type="text" id="fDesc" placeholder="En quelques mots…"></div>
+    <div class="form-group"><label>🧂 Ingrédients</label><textarea id="fIngredients" style="min-height:85px"></textarea></div>
+    <div class="form-group"><label>👨‍🍳 Préparation</label><textarea id="fSteps" style="min-height:105px"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('formOverlay')">Annuler</button>
+      <button class="btn-delete" id="btnDelete" style="display:none" onclick="confirmDelete()">🗑️ Supprimer</button>
+      <button class="btn-save" onclick="saveRecipe()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DÉTAIL -->
+<div class="overlay" id="detailOverlay" onclick="closeOnOverlay(event,'detailOverlay')">
+  <div class="modal" id="detailContent"></div>
+</div>
+
+<script>
+// =====================================================
+// DONNÉES : recettes intégrées directement dans le HTML
+// → fonctionne partout : Drive, mobile, ordi, clé USB
+// Les recettes ajoutées sont stockées en localStorage
+// =====================================================
+const BASE_RECIPES = [
+  {id:1,  name:'Bò Bún',                      cat:'plat',      emoji:'🍜', photo:'https://www.cuisineaz.com/content/uploads/2022/11/bo-bun-1.jpg',                 time:'45 min',       servings:'2 personnes', desc:'Plat vietnamien frais et parfumé',            ingredients:'300g bœuf (filet ou rumsteck)\n150g vermicelles de riz\n1 carotte râpée · ½ concombre en lamelles\nMenthe, coriandre, ciboulette · Cacahuètes\n\n— Marinade —\n2 c. à soupe nuoc mam · 1 c. à soupe sucre · 1 c. à soupe huile · ail · échalote · poivre\n\n— Sauce —\n3 c. à soupe nuoc mam · 2 c. à soupe vinaigre de riz · 2 c. à soupe sucre · ½ verre eau · ail · piment',                 steps:'1. Couper le bœuf en lamelles, mélanger avec la marinade. Reposer 30 min minimum.\n2. Tremper les vermicelles dans eau chaude 5-7 min. Égoutter et rincer à l\'eau froide.\n3. Préparer la sauce en mélangeant tous les ingrédients.\n4. Saisir le bœuf mariné à feu vif 2-3 min max.\n5. Dresser dans des bols : vermicelles, légumes, herbes, bœuf. Parsemer de cacahuètes. Sauce à part.'},
+  {id:2,  name:'Quiche Lorraine',               cat:'entree',    emoji:'🥧', photo:'',                                                                                time:'55 min',       servings:'6 personnes', desc:'Classique française',                          ingredients:'1 pâte brisée · 200g lardons fumés · 3 œufs · 25cl crème fraîche · 10cl lait · 100g gruyère râpé · sel, poivre, muscade',                                                                                                                                                                                                                               steps:'1. Préchauffer le four à 180°C.\n2. Faire revenir les lardons à sec.\n3. Étaler la pâte dans un moule, piquer le fond.\n4. Répartir les lardons. Battre œufs, crème, lait, sel, poivre, muscade. Verser.\n5. Parsemer de gruyère. Enfourner 35-40 min.'},
+  {id:3,  name:'Mousse au Chocolat',             cat:'dessert',   emoji:'🍫', photo:'',                                                                                time:'20 min + 2h',  servings:'6 personnes', desc:'Dessert aérien',                               ingredients:'200g chocolat noir 70% · 6 œufs · 30g sucre · 1 pincée de sel',                                                                                                                                                                                                                                                                                          steps:'1. Faire fondre le chocolat au bain-marie. Tiédir.\n2. Incorporer les jaunes un à un.\n3. Monter les blancs en neige ferme avec le sel.\n4. Ajouter le sucre, fouetter 30 sec.\n5. Incorporer les blancs délicatement en 3 fois.\n6. Réfrigérer 2h minimum.'},
+  {id:4,  name:'Velouté de Carottes',            cat:'thermomix', emoji:'🥕', photo:'',                                                                                time:'25 min',       servings:'4 personnes', desc:'Velouté onctueux',                              ingredients:'600g carottes · 1 oignon · 1L bouillon légumes · 20cl crème fraîche · 1 c. café cumin · sel, poivre',                                                                                                                                                                                                                                                    steps:'1. Oignon dans le bol. Hacher 5 sec / vit. 5.\n2. Ajouter beurre. Faire revenir 3 min / 120°C / vit. 1.\n3. Ajouter carottes, bouillon, cumin. Cuire 20 min / 100°C / vit. 1.\n4. Mixer 1 min / vit. 10 progressivement.\n5. Ajouter crème. Mixer 20 sec / vit. 5. Assaisonner.'},
+  {id:5,  name:'Velouté de Potimarron',          cat:'thermomix', emoji:'🎃', photo:'',                                                                                time:'30 min',       servings:'4 personnes', desc:"Velouté d'automne",                             ingredients:'800g potimarron (peau gardée) · 1 oignon · 1 gousse ail · 1L bouillon légumes · 20cl crème de coco · gingembre · sel, poivre',                                                                                                                                                                                                                            steps:'1. Couper le potimarron en cubes.\n2. Oignon et ail dans le bol. Hacher 5 sec / vit. 5.\n3. Faire revenir 3 min / 120°C / vit. 1.\n4. Ajouter potimarron, gingembre, bouillon. Cuire 22 min / 100°C / vit. 1.\n5. Mixer 1 min / vit. 10. Ajouter crème de coco. Mixer 20 sec / vit. 4. Assaisonner.'},
+  {id:6,  name:'Risotto aux Champignons',        cat:'thermomix', emoji:'🍄', photo:'',                                                                                time:'35 min',       servings:'4 personnes', desc:'Risotto crémeux',                               ingredients:'300g riz arborio · 400g champignons · 1 oignon · 2 gousses ail · 150ml vin blanc · 800ml bouillon légumes · 80g parmesan · 30g beurre',                                                                                                                                                                                                                  steps:'1. Oignon et ail dans le bol. Hacher 5 sec / vit. 5.\n2. Ajouter beurre. Faire revenir 3 min / 120°C / vit. 1.\n3. Ajouter champignons. Cuire 5 min / 100°C / sens inverse / vit. 1.\n4. Ajouter riz. Cuire 2 min / 100°C / sens inverse / vit. 1.\n5. Déglacer au vin blanc. Ajouter bouillon chaud.\n6. Cuire 16 min / 100°C / sens inverse / vit. 1. Incorporer parmesan. Reposer 2 min.'},
+  {id:7,  name:"Soupe à l'Oignon",               cat:'entree',    emoji:'🥣', photo:'',                                                                                time:'55 min',       servings:'4 personnes', desc:'La classique gratinée',                         ingredients:'4 gros oignons jaunes · 50g beurre · 1 c. soupe farine · 150ml vin blanc · 1L bouillon bœuf · 8 tranches pain campagne · 150g gruyère râpé',                                                                                                                                                                                                             steps:'1. Émincer finement les oignons.\n2. Caraméliser dans le beurre à feu doux 25 min.\n3. Saupoudrer farine, mélanger 1 min. Déglacer au vin blanc, réduire 2 min.\n4. Ajouter bouillon chaud, mijoter 20 min. Assaisonner.\n5. Verser dans des bols, ajouter pain + gruyère.\n6. Gratiner 5-7 min sous le grill.'},
+  {id:8,  name:'Fondant au Chocolat',            cat:'thermomix', emoji:'🍮', photo:'',                                                                                time:'25 min',       servings:'6 personnes', desc:'Cœur coulant irrésistible',                     ingredients:'200g chocolat noir · 150g beurre · 150g sucre · 4 œufs · 50g farine · beurre + cacao pour ramequins',                                                                                                                                                                                                                                                    steps:'1. Préchauffer le four à 200°C. Beurrer des ramequins, saupoudrer cacao.\n2. Chocolat + beurre dans le bol. Fondre 4 min / 50°C / vit. 2.\n3. Ajouter sucre, mélanger 10 sec / vit. 3. Ajouter œufs + farine. Mélanger 20 sec / vit. 4.\n4. Verser dans les ramequins. Cuire 10-12 min à 200°C.\n5. Démouler immédiatement. Servir avec glace vanille.'},
+  {id:9,  name:'Tapenade Maison',                cat:'entree',    emoji:'🫒', photo:'',                                                                                time:'10 min',       servings:'8 personnes', desc:'Apéro provençal',                               ingredients:'200g olives noires dénoyautées · 50g câpres · 4 filets anchois · 1 gousse ail · 4-5 c. soupe huile d\'olive · poivre noir',                                                                                                                                                                                                                              steps:'1. Égoutter olives, câpres et anchois.\n2. Mixer tous les ingrédients par impulsions en ajoutant l\'huile progressivement.\n3. Texture granuleuse souhaitée.\n4. Assaisonner. Conserver en bocal au réfrigérateur.\n5. Servir sur des toasts grillés.'},
+  {id:10, name:'Gâteau au Yaourt',               cat:'dessert',   emoji:'🎂', photo:'',                                                                                time:'45 min',       servings:'8 personnes', desc:'Moelleux et inratable',                         ingredients:'1 yaourt nature (le pot = mesure) · 2 pots farine · 1,5 pot sucre · ½ pot huile · 3 œufs · 1 sachet levure · 1 sachet sucre vanillé',                                                                                                                                                                                                                   steps:'1. Préchauffer le four à 180°C. Beurrer et fariner le moule.\n2. Vider le yaourt dans un saladier.\n3. Ajouter dans l\'ordre : sucre, sucre vanillé, œufs, huile, farine, levure. Mélanger entre chaque.\n4. Verser dans le moule. Enfourner 35-40 min.\n5. Vérifier avec la lame d\'un couteau. Laisser tiédir avant de démouler.'},
+  {id:11, name:'Bœuf Bourguignon',               cat:'plat',      emoji:'🥩', photo:'https://img.cuisineaz.com/660x495/2013/12/20/i8721-boeuf-bourguignon.jpeg',       time:'5h30',         servings:'4 personnes', desc:'Le grand classique mijoté au vin de Bourgogne',  ingredients:'Huile d\'olive + beurre\n1 échalotte + 1 gousse d\'ail\nMacreuse, gîte, joue de bœuf (1,2 kg)\n75 cl de vin de Bourgogne\n25 petits oignons grelots\n200g lardons · 300g champignons de Paris\n1 grosse carotte en rondelles · 1 c. à soupe farine · 1 bouquet garni · sel, poivre',                                                                        steps:'1. Chauffer huile d\'olive + beurre dans un fait-tout en fonte. Ajouter l\'échalotte ciselée et l\'ail entier.\n2. Saisir le bœuf sur toutes ses faces.\n3. Fariner la viande, poivrer. Ajouter le vin, saler, ajouter le bouquet garni. Couvrir et cuire doucement 5 heures.\n4. Cuire les oignons grelots à l\'étouffée 10 min. Réserver.\n5. Faire revenir les lardons à sec. Réserver. Faire revenir les champignons dans le gras des lardons.\n6. Au bout de 3h de cuisson, ajouter la carotte. Cuire 1h.\n7. Ajouter lardons, champignons et oignons. Mélanger et cuire encore 1h.\n8. Servir avec des pommes de terre ou des pâtes.'},
+  {id:12, name:'Vinaigrette Maison',             cat:'entree',    emoji:'🥗', photo:'',                                                                                time:'5 min',        servings:'1 saladier',  desc:'La base de toutes les salades',                ingredients:'1 c. à café de moutarde · sel, poivre\n1 c. à soupe de vinaigre (xérès, balsamique ou framboise)\n2 c. à soupe d\'huile d\'olive · 1 échalotte finement ciselée\n💡 Version allégée : 1 c. soupe huile + 1 c. soupe eau',                                                                                                                                    steps:'1. Mettre dans le saladier le sel et le poivre.\n2. Ajouter la moutarde.\n3. Ajouter le vinaigre et bien mélanger.\n4. Ajouter l\'huile d\'olive et mélanger vigoureusement.\n5. Ajouter l\'échalotte finement ciselée.\n6. Bien mélanger. Ajouter la salade juste avant de servir.'},
+  {id:13, name:'Ceviche de Bar aux Agrumes',     cat:'entree',    emoji:'🐟', photo:'',                                                                                time:'20 min + 1h',  servings:'2 personnes', desc:'Frais et acidulé, cuisson par les agrumes',     ingredients:'200g de filet de bar frais · 1 orange · 1 citron vert · ½ oignon rouge · ½ piment doux (facultatif) · 1 c. soupe coriandre hachée · 1 c. café huile d\'olive',                                                                                                                                                                                              steps:'1. Couper le bar en dés.\n2. Presser l\'orange et le citron vert. Mélanger le jus avec l\'oignon rouge émincé, le piment et la coriandre.\n3. Verser sur le poisson. Ajouter l\'huile d\'olive.\n4. Laisser mariner 1h au réfrigérateur.\n5. Servir avec des feuilles de salade.\n💡 La cuisson se fait par l\'acidité des agrumes, pas besoin de chaleur.'},
+  {id:14, name:'Terrine de Saumon & Épinards',   cat:'entree',    emoji:'🐠', photo:'',                                                                                time:'50 min',       servings:'4 personnes', desc:'Légère et délicate, parfaite en entrée',         ingredients:'200g de filet de saumon frais · 100g d\'épinards frais · 1 œuf · 50g de fromage blanc 0% · 1 c. soupe d\'aneth · sel, poivre',                                                                                                                                                                                                                             steps:'1. Préchauffer le four à 180°C.\n2. Faire blanchir les épinards 2 min. Égoutter et hacher.\n3. Mixer le saumon avec l\'œuf, le fromage blanc, l\'aneth, sel et poivre.\n4. Incorporer les épinards hachés.\n5. Verser dans un moule à cake. Cuire 30 min au bain-marie.\n6. Laisser refroidir avant de démouler.\n💡 Servir avec une salade verte et une vinaigrette légère.'},
+  {id:15, name:"Tartare de Bœuf à l'Asiatique", cat:'entree',    emoji:'🥩', photo:'',                                                                                time:'20 min',       servings:'6 personnes', desc:'Saveurs asiatiques, fraîcheur et caractère',     ingredients:'350g de filet de rumsteck · 1 grosse échalotte · 50g de gingembre · 1 c. soupe huile de sésame grillé · 3 c. soupe sauce soja salée · ½ botte coriandre ciselée · sel, poivre · 1 c. soupe graines de sésame',                                                                                                                                              steps:'1. Couper la viande finement en petits morceaux au couteau.\n2. Ajouter l\'échalotte ciselée finement.\n3. Ajouter le gingembre râpé ou coupé finement.\n4. Mélanger en ajoutant petit à petit la sauce soja.\n5. Ajouter l\'huile de sésame, la coriandre et les graines de sésame.\n6. Poivrer, saler légèrement.\n7. Servir en apéro ou accompagné de pommes de terre ou de salade.'},
+  {id:16, name:'Filet de Cabillaud en Papillote', cat:'plat',     emoji:'🐡', photo:'',                                                                                time:'25 min',       servings:'2 personnes', desc:'Léger, parfumé et prêt en 25 minutes',           ingredients:'2 filets de cabillaud (150g chacun) · 1 courgette · 1 tomate · 1 c. soupe jus de citron · 1 c. café huile d\'olive · 1 c. café aneth · sel, poivre',                                                                                                                                                                                                     steps:'1. Préchauffer le four à 200°C.\n2. Couper la courgette et la tomate en fines lamelles.\n3. Déposer chaque filet sur une feuille de papier sulfurisé. Ajouter légumes, jus de citron, huile d\'olive, aneth, sel et poivre.\n4. Refermer hermétiquement les papillotes.\n5. Cuire 15 min au four.\n💡 Servir avec une salade verte et une vinaigrette légère.'},
+  {id:17, name:'Terrine de Thon et Légumes',     cat:'entree',    emoji:'🐟', photo:'',                                                                                time:'40 min',       servings:'4 personnes', desc:'Simple, léger et savoureux',                     ingredients:'1 boîte de thon au naturel (200g) · 1 carotte · 1 branche de céleri · 1 œuf · 2 c. soupe yaourt grec 0% · 1 c. café ciboulette · sel, poivre',                                                                                                                                                                                                           steps:'1. Préchauffer le four à 180°C.\n2. Râper la carotte et émincer le céleri.\n3. Égoutter le thon. Mélanger avec œuf, yaourt, ciboulette, sel et poivre.\n4. Ajouter carotte et céleri. Bien mélanger.\n5. Verser dans un moule à cake. Cuire 25 min au bain-marie.\n6. Laisser tiédir avant de démouler.\n💡 Servir avec des cornichons et du pain complet.'},
+];
+
+// =====================================================
+const SK = 'livre_cuisine_ajouts_v3';
+const SKP = 'livre_cuisine_photos_v3';
+const CATS = {
+  entree:    { label:'Entrée',    emoji:'🥗', color:'#3a7a5a' },
+  plat:      { label:'Plat',      emoji:'🍽️', color:'#7a5a20' },
+  dessert:   { label:'Dessert',   emoji:'🌸', color:'#7a3060' },
+  thermomix: { label:'Thermomix', emoji:'⚙️', color:'#2a5888' },
+};
+
+let userRecipes = []; // recettes ajoutées par l'utilisateur (localStorage)
+let recipes = [];     // BASE_RECIPES + userRecipes (merge)
+let activeFilter = 'all', editingId = null, currentPhoto = null;
+let scanImageBase64 = null;
+
+// Charger les ajouts utilisateur depuis localStorage
+function loadUserRecipes() {
+  try {
+    const raw = localStorage.getItem(SK);
+    if (raw) {
+      userRecipes = JSON.parse(raw);
+      // Recharger les photos base64
+      const pr = localStorage.getItem(SKP);
+      if (pr) {
+        const photos = JSON.parse(pr);
+        userRecipes.forEach(r => { if (r.photo && r.photo.startsWith('__p_')) r.photo = photos[r.id] || ''; });
+      }
+    }
+  } catch(e) { userRecipes = []; }
+  mergeRecipes();
+}
+
+function mergeRecipes() {
+  // Fusionner : les recettes utilisateur remplacent les recettes de base si même id
+  const userIds = new Set(userRecipes.map(r => r.id));
+  // Filtrer les BASE_RECIPES modifiées (id < 100) + ajouter les nouvelles
+  const baseFiltered = BASE_RECIPES.filter(r => !userIds.has(r.id));
+  // Trier par id
+  recipes = [...baseFiltered, ...userRecipes].sort((a,b) => a.id - b.id);
+}
+
+function saveUserRecipes() {
+  try {
+    const light = userRecipes.map(r => ({...r, photo: r.photo && r.photo.startsWith('data:') ? `__p_${r.id}` : (r.photo||'')}));
+    localStorage.setItem(SK, JSON.stringify(light));
+    const photos = {};
+    userRecipes.forEach(r => { if (r.photo && r.photo.startsWith('data:')) photos[r.id] = r.photo; });
+    localStorage.setItem(SKP, JSON.stringify(photos));
+  } catch(e) {
+    try {
+      const light = userRecipes.map(r => ({...r, photo: r.photo && r.photo.startsWith('data:') ? '' : (r.photo||'')}));
+      localStorage.setItem(SK, JSON.stringify(light));
+    } catch(e2) {}
+  }
+}
+
+// RENDER
+function renderAll() {
+  renderFilters();
+  renderStats();
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const f = recipes.filter(r =>
+    (activeFilter === 'all' || r.cat === activeFilter) &&
+    (!q || r.name.toLowerCase().includes(q) || (r.ingredients||'').toLowerCase().includes(q) || (r.desc||'').toLowerCase().includes(q))
+  );
+  const container = document.getElementById('recipeContainer');
+  if (!f.length) { container.innerHTML = `<div class="empty">Aucune recette trouvée…</div>`; return; }
+  if (activeFilter !== 'all') {
+    container.innerHTML = `<div class="grid" id="mg"></div>`;
+    f.forEach((r,i) => { const c = makeCard(r); c.style.animationDelay=(i*0.04)+'s'; document.getElementById('mg').appendChild(c); });
+  } else {
+    container.innerHTML = '';
+    Object.entries(CATS).forEach(([cat, info]) => {
+      const items = f.filter(r => r.cat === cat); if (!items.length) return;
+      const sec = document.createElement('div');
+      sec.innerHTML = `<div class="section-head"><h2>${info.emoji} ${info.label}s</h2></div><div class="grid"></div>`;
+      items.forEach((r,i) => { const c = makeCard(r); c.style.animationDelay=(i*0.04)+'s'; sec.querySelector('.grid').appendChild(c); });
+      container.appendChild(sec);
+    });
+  }
+}
+
+function makeCard(r) {
+  const info = CATS[r.cat] || CATS.plat;
+  const div = document.createElement('div'); div.className = 'card';
+  let imgContent = (r.photo && !r.photo.startsWith('__'))
+    ? `<img src="${r.photo}" alt="${r.name}" onerror="this.style.display='none'"><div class="card-img-overlay"></div>`
+    : `<span style="font-size:3.2rem">${r.emoji||'🍽️'}</span>`;
+  div.innerHTML = `
+    <div class="card-img">${imgContent}<span class="card-badge ${r.cat}">${info.label}</span></div>
+    <div class="card-body">
+      <div class="card-cat ${r.cat}">${info.label}</div>
+      <div class="card-name">${r.name}</div>
+      <div class="card-meta">${r.time?`<span>⏱ ${r.time}</span>`:''}${r.servings?`<span>👥 ${r.servings}</span>`:''}</div>
+      ${r.desc?`<div class="card-desc">${r.desc}</div>`:''}
+      <button class="card-edit-btn" onclick="event.stopPropagation();openEditModal(${r.id})">✏️ Modifier</button>
+    </div>`;
+  div.querySelector('.card-img').addEventListener('click', () => openDetail(r.id));
+  div.querySelector('.card-name').addEventListener('click', () => openDetail(r.id));
+  return div;
+}
+
+function renderFilters() {
+  const counts = { all: recipes.length };
+  Object.keys(CATS).forEach(k => counts[k] = recipes.filter(r => r.cat === k).length);
+  const pills = document.getElementById('filterPills');
+  pills.innerHTML = '';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'fpill' + (activeFilter==='all'?' active':'');
+  allBtn.textContent = `Toutes (${counts.all})`;
+  allBtn.onclick = () => setFilter('all');
+  pills.appendChild(allBtn);
+  Object.entries(CATS).forEach(([cat, info]) => {
+    const btn = document.createElement('button');
+    btn.className = 'fpill' + (activeFilter===cat?' active':'');
+    btn.textContent = `${info.label}s (${counts[cat]})`;
+    btn.onclick = () => setFilter(cat);
+    pills.appendChild(btn);
+  });
+}
+
+function renderStats() {
+  const c = {}; Object.keys(CATS).forEach(k => c[k] = 0);
+  recipes.forEach(r => { if(c[r.cat]!==undefined) c[r.cat]++; });
+  document.getElementById('stats').innerHTML =
+    `<span><span class="dot" style="background:var(--or)"></span>${recipes.length} recettes</span>` +
+    Object.entries(CATS).map(([k,v])=>`<span><span class="dot" style="background:${v.color}"></span>${c[k]} ${v.label.toLowerCase()}${c[k]>1?'s':''}</span>`).join('');
+}
+
+function setFilter(cat) { activeFilter = cat; renderAll(); }
+
+// PHOTO
+function switchTab(tab) {
+  document.getElementById('tabUpload').classList.toggle('active', tab==='upload');
+  document.getElementById('tabUrl').classList.toggle('active', tab==='url');
+  document.getElementById('zoneUpload').style.display = tab==='upload' ? 'block' : 'none';
+  document.getElementById('zoneUrl').style.display = tab==='url' ? 'block' : 'none';
+}
+function handleFileUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => showPhotoPreview(ev.target.result);
+  reader.readAsDataURL(file);
+}
+function applyUrl() {
+  const url = document.getElementById('fPhotoUrl').value.trim();
+  if (url) showPhotoPreview(url);
+}
+function showPhotoPreview(src) {
+  currentPhoto = src;
+  document.getElementById('photoPreviewImg').src = src;
+  document.getElementById('photoPreviewWrap').classList.add('show');
+  document.getElementById('fPhotoUrl').value = '';
+  document.getElementById('fPhotoFile').value = '';
+}
+function removePhoto() {
+  currentPhoto = null;
+  document.getElementById('photoPreviewWrap').classList.remove('show');
+  document.getElementById('photoPreviewImg').src = '';
+  document.getElementById('fPhotoFile').value = '';
+  document.getElementById('fPhotoUrl').value = '';
+}
+
+// SCAN IA
+function openScanModal() {
+  scanImageBase64 = null;
+  document.getElementById('scanFile').value = '';
+  document.getElementById('scanPreview').classList.remove('show');
+  document.getElementById('scanPreview').src = '';
+  document.getElementById('scanStatus').className = 'scan-status';
+  document.getElementById('scanStatus').textContent = '';
+  document.getElementById('btnAnalyze').disabled = true;
+  document.getElementById('scanOverlay').classList.add('open');
+}
+
+function handleScanFile(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    scanImageBase64 = ev.target.result;
+    document.getElementById('scanPreview').src = scanImageBase64;
+    document.getElementById('scanPreview').classList.add('show');
+    document.getElementById('btnAnalyze').disabled = false;
+    document.getElementById('scanStatus').className = 'scan-status';
+    document.getElementById('scanStatus').textContent = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function analyzeRecipe() {
+  if (!scanImageBase64) return;
+  const btn = document.getElementById('btnAnalyze');
+  const status = document.getElementById('scanStatus');
+  btn.disabled = true;
+  status.className = 'scan-status loading';
+  status.textContent = '🔍 Analyse en cours… L\'IA lit votre recette…';
+
+  try {
+    const base64Data = scanImageBase64.split(',')[1];
+    const mediaType = scanImageBase64.split(';')[0].split(':')[1];
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mediaType, data: base64Data }
+            },
+            {
+              type: 'text',
+              text: `Analyse cette image de recette de cuisine et extrais les informations. Réponds UNIQUEMENT en JSON valide, sans texte avant ni après, sans balises markdown :
+{
+  "name": "Nom de la recette",
+  "cat": "entree|plat|dessert|thermomix",
+  "time": "Temps total (ex: 45 min)",
+  "servings": "X personnes",
+  "desc": "Description courte en une phrase",
+  "ingredients": "Liste des ingrédients, un par ligne avec les quantités",
+  "steps": "Les étapes numérotées de la préparation, une par ligne"
+}
+Pour "cat" : choisir entre "entree" (entrées, salades, soupes, terrines, apéritifs), "plat" (plats principaux, viandes, poissons, pâtes), "dessert" (gâteaux, tartes, crèmes), "thermomix" (recettes Thermomix). Si ce n'est pas une recette, mettre name: "NON_RECETTE".`
+            }
+          ]
+        }]
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error?.message || 'Erreur API');
+
+    const text = data.content?.[0]?.text || '';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Format de réponse invalide');
+
+    const parsed = JSON.parse(jsonMatch[0]);
+    if (parsed.name === 'NON_RECETTE') throw new Error('Aucune recette détectée dans l\'image');
+
+    status.className = 'scan-status success';
+    status.textContent = `✅ Recette "${parsed.name}" extraite avec succès !`;
+
+    // Fermer le scan et ouvrir le formulaire pré-rempli
+    setTimeout(() => {
+      closeModal('scanOverlay');
+      openAddModal();
+      document.getElementById('fName').value = parsed.name || '';
+      document.getElementById('fCat').value = parsed.cat || 'plat';
+      document.getElementById('fTime').value = parsed.time || '';
+      document.getElementById('fServings').value = parsed.servings || '';
+      document.getElementById('fDesc').value = parsed.desc || '';
+      document.getElementById('fIngredients').value = parsed.ingredients || '';
+      document.getElementById('fSteps').value = parsed.steps || '';
+    }, 1200);
+
+  } catch(err) {
+    status.className = 'scan-status error';
+    status.textContent = `❌ ${err.message}. Vérifiez que l'image est lisible et réessayez.`;
+    btn.disabled = false;
+  }
+}
+
+// MODALS
+function resetForm() {
+  ['fName','fTime','fServings','fDesc','fIngredients','fSteps','fPhotoUrl'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fPhotoFile').value = '';
+  removePhoto(); switchTab('upload');
+}
+function openAddModal() {
+  editingId = null; currentPhoto = null;
+  document.getElementById('formTitle').textContent = '✦ Nouvelle recette';
+  document.getElementById('btnDelete').style.display = 'none';
+  document.getElementById('fCat').value = 'plat';
+  resetForm();
+  document.getElementById('formOverlay').classList.add('open');
+}
+function openEditModal(id) {
+  const r = recipes.find(x => x.id === id); if (!r) return;
+  editingId = id;
+  currentPhoto = (r.photo && !r.photo.startsWith('__')) ? r.photo : null;
+  document.getElementById('formTitle').textContent = '✏️ Modifier la recette';
+  document.getElementById('btnDelete').style.display = 'block';
+  document.getElementById('fName').value = r.name || '';
+  document.getElementById('fCat').value = r.cat || 'plat';
+  document.getElementById('fTime').value = r.time || '';
+  document.getElementById('fServings').value = r.servings || '';
+  document.getElementById('fDesc').value = r.desc || '';
+  document.getElementById('fIngredients').value = r.ingredients || '';
+  document.getElementById('fSteps').value = r.steps || '';
+  document.getElementById('fPhotoUrl').value = '';
+  document.getElementById('fPhotoFile').value = '';
+  switchTab('upload');
+  if (currentPhoto) showPhotoPreview(currentPhoto); else removePhoto();
+  closeModal('detailOverlay');
+  document.getElementById('formOverlay').classList.add('open');
+}
+
+function saveRecipe() {
+  const name = document.getElementById('fName').value.trim();
+  if (!name) { document.getElementById('fName').style.borderColor='rgba(180,60,60,0.6)'; return; }
+  const cat = document.getElementById('fCat').value;
+  const data = {
+    name, cat, emoji: CATS[cat]?.emoji||'🍽️', photo: currentPhoto||'',
+    time: document.getElementById('fTime').value.trim(),
+    servings: document.getElementById('fServings').value.trim(),
+    desc: document.getElementById('fDesc').value.trim(),
+    ingredients: document.getElementById('fIngredients').value.trim(),
+    steps: document.getElementById('fSteps').value.trim()
+  };
+  if (editingId) {
+    // Chercher dans userRecipes d'abord
+    const idx = userRecipes.findIndex(r => r.id === editingId);
+    if (idx !== -1) {
+      userRecipes[idx] = { ...userRecipes[idx], ...data };
+    } else {
+      // C'est une recette de base qu'on modifie → on l'ajoute en userRecipes
+      userRecipes.push({ id: editingId, ...data });
+    }
+  } else {
+    userRecipes.push({ id: Date.now(), ...data });
+  }
+  saveUserRecipes();
+  mergeRecipes();
+  closeModal('formOverlay');
+  renderAll();
+}
+
+function confirmDelete() {
+  if (!editingId || !confirm('Supprimer cette recette définitivement ?')) return;
+  userRecipes = userRecipes.filter(r => r.id !== editingId);
+  // Si c'est une recette de base, on ne peut pas vraiment la supprimer du HTML
+  // mais on peut la masquer en la marquant comme supprimée
+  const isBase = BASE_RECIPES.some(r => r.id === editingId);
+  if (isBase) {
+    userRecipes.push({ id: editingId, _deleted: true, name:'', cat:'entree', emoji:'', photo:'', time:'', servings:'', desc:'', ingredients:'', steps:'' });
+  }
+  saveUserRecipes();
+  mergeRecipes();
+  // Reconstruire sans les recettes supprimées
+  recipes = recipes.filter(r => !r._deleted);
+  closeModal('formOverlay');
+  renderAll();
+}
+
+function openDetail(id) {
+  const r = recipes.find(x => x.id === id); if (!r) return;
+  const info = CATS[r.cat] || CATS.plat;
+  const imgHtml = (r.photo && !r.photo.startsWith('__'))
+    ? `<div class="detail-img-wrap"><img src="${r.photo}" alt="${r.name}" onerror="this.parentElement.innerHTML='<span style=font-size:4rem>${r.emoji||'🍽️'}</span>'"></div>`
+    : `<div class="detail-img-wrap">${r.emoji||'🍽️'}</div>`;
+  document.getElementById('detailContent').innerHTML = `
+    ${imgHtml}
+    <span class="detail-badge ${r.cat}">${info.emoji} ${info.label}</span>
+    <div class="detail-name">${r.name}</div>
+    <div class="detail-meta">${r.time?`<span>⏱ ${r.time}</span>`:''}${r.servings?`<span>👥 ${r.servings}</span>`:''}</div>
+    ${r.desc?`<div class="detail-desc-text">${r.desc}</div>`:''}
+    ${r.ingredients?`<div class="detail-sec"><h3>🧂 Ingrédients</h3><p>${r.ingredients}</p></div>`:''}
+    ${r.steps?`<div class="detail-sec"><h3>👨‍🍳 Préparation</h3><p>${r.steps}</p></div>`:''}
+    <div class="detail-actions">
+      <button class="btn-cancel" onclick="closeModal('detailOverlay')">Fermer</button>
+      <button class="btn-edit" onclick="openEditModal(${r.id})">✏️ Modifier</button>
+    </div>`;
+  document.getElementById('detailOverlay').classList.add('open');
+}
+
+function printBook() {
+  const printable = recipes.filter(r => !r._deleted);
+  if (!printable.length) { alert('Aucune recette à imprimer !'); return; }
+  const c = {}; Object.keys(CATS).forEach(k => c[k] = 0);
+  printable.forEach(r => { if(c[r.cat]!==undefined) c[r.cat]++; });
+  const today = new Date().toLocaleDateString('fr-FR',{year:'numeric',month:'long',day:'numeric'});
+  let html = `<div class="p-cover"><h1>Mon Livre de Cuisine</h1><p class="sub">— Collection personnelle · ${today} —</p><div class="p-cover-stats">${Object.entries(CATS).map(([k,v])=>`<div class="p-cover-stat"><strong>${c[k]}</strong>${v.label}s</div>`).join('')}</div></div>
+  <div class="p-toc"><h2>Table des matières</h2>`;
+  Object.keys(CATS).forEach(cat => printable.filter(r=>r.cat===cat).forEach(r=>{html+=`<div class="p-toc-row"><span>${r.emoji||'🍽️'} ${r.name}</span><span class="p-badge ${cat}">${CATS[cat].label}</span></div>`;}));
+  html += `</div>`;
+  Object.entries(CATS).forEach(([cat,info]) => {
+    const list = printable.filter(r=>r.cat===cat); if(!list.length)return;
+    html += `<div class="p-section"><div class="p-section-h">${info.emoji} ${info.label}s</div>`;
+    list.forEach(r=>{html+=`<div class="p-recipe"><div class="p-r-head"><span>${r.emoji||'🍽️'}</span><span class="p-r-name">${r.name}</span></div><div class="p-r-meta">${r.time?`<span>⏱ ${r.time}</span>`:''}${r.servings?`<span>👥 ${r.servings}</span>`:''}</div>${r.desc?`<div class="p-r-desc">${r.desc}</div>`:''}${r.ingredients?`<h4>Ingrédients</h4><p>${r.ingredients}</p>`:''}${r.steps?`<h4>Préparation</h4><p>${r.steps}</p>`:''}</div>`;});
+    html += `</div>`;
+  });
+  document.getElementById('printArea').innerHTML = html;
+  setTimeout(()=>window.print(),200);
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOnOverlay(e,id){if(e.target.id===id)closeModal(id);}
+
+// INIT
+loadUserRecipes();
+renderAll();
+</script>
+</body>
+</html>
