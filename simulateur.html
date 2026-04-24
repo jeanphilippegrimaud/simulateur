@@ -400,6 +400,94 @@
           <input type="email" id="l-email" placeholder="votre@email.fr">
         </div>
       </div>
+
+      <!-- SITUATION FAMILIALE & PRO -->
+      <div class="field-group">
+        <div class="field">
+          <label>Situation familiale</label>
+          <select id="l-situation">
+            <option value="">Sélectionnez...</option>
+            <option>Célibataire</option>
+            <option>Marié(e)</option>
+            <option>Pacsé(e)</option>
+            <option>Union libre</option>
+            <option>Veuf(ve)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Situation professionnelle</label>
+          <select id="l-situpro">
+            <option value="">Sélectionnez...</option>
+            <option>CDI</option>
+            <option>CDD</option>
+            <option>Fonctionnaire</option>
+            <option>Intérimaire</option>
+            <option>Intermittent du spectacle</option>
+            <option>Étudiant(e)</option>
+            <option>Chômeur(se)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- CONJOINT -->
+      <div class="field-group full">
+        <div class="field">
+          <label>Avec un conjoint ?</label>
+          <select id="l-conjoint" onchange="toggleConjoint()">
+            <option value="non">Non</option>
+            <option value="oui">Oui</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- INFOS CONJOINT -->
+      <div id="bloc-conjoint" style="display:none;">
+        <div class="field-group">
+          <div class="field">
+            <label>Prénom & Nom du conjoint</label>
+            <input type="text" id="l-conjoint-nom" placeholder="Jean Dupont">
+          </div>
+          <div class="field">
+            <label>Téléphone du conjoint</label>
+            <input type="tel" id="l-conjoint-tel" placeholder="06 XX XX XX XX">
+          </div>
+        </div>
+        <div class="field-group full">
+          <div class="field">
+            <label>Email du conjoint</label>
+            <input type="email" id="l-conjoint-email" placeholder="conjoint@email.fr">
+          </div>
+        </div>
+        <div class="field-group full">
+          <div class="field">
+            <label>Situation professionnelle du conjoint</label>
+            <select id="l-conjoint-situpro">
+              <option value="">Sélectionnez...</option>
+              <option>CDI</option>
+              <option>CDD</option>
+              <option>Fonctionnaire</option>
+              <option>Intérimaire</option>
+              <option>Intermittent du spectacle</option>
+              <option>Étudiant(e)</option>
+              <option>Chômeur(se)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group full">
+          <div class="field">
+            <label>Situation familiale du conjoint</label>
+            <select id="l-conjoint-situfam">
+              <option value="">Sélectionnez...</option>
+              <option>Célibataire</option>
+              <option>Marié(e)</option>
+              <option>Pacsé(e)</option>
+              <option>Union libre</option>
+              <option>Veuf(ve)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="field-group">
         <div class="field">
           <label>Votre projet</label>
@@ -556,6 +644,11 @@
 // 🔧 REMPLACEZ CETTE URL PAR VOTRE URL GOOGLE APPS SCRIPT
 var GOOGLE_SCRIPT_URL = 'https://api.web3forms.com/submit';
 
+function toggleConjoint() {
+  var val = document.getElementById('l-conjoint').value;
+  document.getElementById('bloc-conjoint').style.display = val === 'oui' ? 'block' : 'none';
+}
+
 function fmt(n) {
   return parseInt(n).toLocaleString('fr-FR');
 }
@@ -623,6 +716,14 @@ async function sendLead() {
   var email=document.getElementById('l-email').value;
   var projet=document.getElementById('l-projet').value||'NC';
   var profil=document.getElementById('l-profil').value||'NC';
+  var situation=document.getElementById('l-situation').value||'NC';
+  var situpro=document.getElementById('l-situpro').value||'NC';
+  var avecConjoint=document.getElementById('l-conjoint').value;
+  var conjointNom=avecConjoint==='oui' ? document.getElementById('l-conjoint-nom').value||'NC' : '';
+  var conjointTel=avecConjoint==='oui' ? document.getElementById('l-conjoint-tel').value||'NC' : '';
+  var conjointEmail=avecConjoint==='oui' ? document.getElementById('l-conjoint-email').value||'NC' : '';
+  var conjointSitupro=avecConjoint==='oui' ? document.getElementById('l-conjoint-situpro').value||'NC' : '';
+  var conjointSitufam=avecConjoint==='oui' ? document.getElementById('l-conjoint-situfam').value||'NC' : '';
   var rev=document.getElementById('r-rev').value;
   var chg=document.getElementById('r-chg').value;
   var apt=document.getElementById('r-apt').value;
@@ -640,6 +741,9 @@ async function sendLead() {
       body:JSON.stringify({
         access_key:'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom:nom, telephone:tel, email:email,
+        situation_familiale:situation,
+        situation_professionnelle:situpro,
+        conjoint:avecConjoint==='oui' ? 'Oui — '+conjointNom+' · '+conjointTel+' · '+conjointEmail+' · Situpro: '+conjointSitupro+' · Situfam: '+conjointSitufam : 'Non',
         projet:projet, profil:profil,
         revenus:rev+' €/mois', charges:chg+' €/mois',
         apport:apt+' €', duree:dur+' ans',

@@ -1558,6 +1558,86 @@
           <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Email</label>
           <input type="email" id="lead-email" placeholder="votre@email.fr" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.95rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
         </div>
+
+        <!-- SITUATION FAMILIALE & PRO -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Situation familiale</label>
+            <select id="lead-situation" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.88rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+              <option value="">Sélectionnez...</option>
+              <option>Célibataire</option>
+              <option>Marié(e)</option>
+              <option>Pacsé(e)</option>
+              <option>Union libre</option>
+              <option>Veuf(ve)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Situation professionnelle</label>
+            <select id="lead-situpro" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.88rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+              <option value="">Sélectionnez...</option>
+              <option>CDI</option>
+              <option>CDD</option>
+              <option>Fonctionnaire</option>
+              <option>Intérimaire</option>
+              <option>Intermittent du spectacle</option>
+              <option>Étudiant(e)</option>
+              <option>Chômeur(se)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CONJOINT -->
+        <div>
+          <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Avec un conjoint ?</label>
+          <select id="lead-conjoint" onchange="toggleConjointLead()" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.88rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+            <option value="non">Non</option>
+            <option value="oui">Oui</option>
+          </select>
+        </div>
+
+        <!-- INFOS CONJOINT -->
+        <div id="bloc-conjoint-lead" style="display:none;background:#f8f6f2;border-radius:4px;padding:0.9rem;display:none;flex-direction:column;gap:0.75rem;">
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Prénom & Nom du conjoint</label>
+            <input type="text" id="lead-conjoint-nom" placeholder="Jean Dupont" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.95rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Téléphone conjoint</label>
+              <input type="tel" id="lead-conjoint-tel" placeholder="06 XX XX XX XX" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.95rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Email conjoint</label>
+              <input type="email" id="lead-conjoint-email" placeholder="conjoint@email.fr" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.95rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+            </div>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Situation professionnelle du conjoint</label>
+            <select id="lead-conjoint-situpro" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.88rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+              <option value="">Sélectionnez...</option>
+              <option>CDI</option>
+              <option>CDD</option>
+              <option>Fonctionnaire</option>
+              <option>Intérimaire</option>
+              <option>Intermittent du spectacle</option>
+              <option>Étudiant(e)</option>
+              <option>Chômeur(se)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Situation familiale du conjoint</label>
+            <select id="lead-conjoint-situfam" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.88rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+              <option value="">Sélectionnez...</option>
+              <option>Célibataire</option>
+              <option>Marié(e)</option>
+              <option>Pacsé(e)</option>
+              <option>Union libre</option>
+              <option>Veuf(ve)</option>
+            </select>
+          </div>
+        </div>
+
         <div>
           <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Votre projet</label>
           <select id="lead-projet" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.95rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
@@ -1567,6 +1647,15 @@
             <option>Résidence secondaire</option>
             <option>Rachat de crédit</option>
             <option>Autre</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#3a5270;display:block;margin-bottom:0.4rem;">Vous êtes</label>
+          <select id="lead-profil" style="width:100%;padding:0.75rem 1rem;border:1px solid #c8c2b5;border-radius:4px;font-size:0.95rem;background:#fff;color:#1e2d40;font-family:'DM Sans',sans-serif;">
+            <option value="">Sélectionnez...</option>
+            <option>Primo-accédant</option>
+            <option>Déjà propriétaire</option>
+            <option>Investisseur</option>
           </select>
         </div>
       </div>
@@ -1667,6 +1756,12 @@
 // 🔧 REMPLACEZ CETTE URL PAR VOTRE URL GOOGLE APPS SCRIPT
 var GOOGLE_SCRIPT_URL = 'https://api.web3forms.com/submit';
 
+function toggleConjointLead() {
+  var val = document.getElementById('lead-conjoint').value;
+  var bloc = document.getElementById('bloc-conjoint-lead');
+  bloc.style.display = val === 'oui' ? 'flex' : 'none';
+}
+
 function openCalc() {
   var o = document.getElementById('calc-overlay');
   o.style.display = 'flex';
@@ -1692,6 +1787,14 @@ async function validerLead() {
   }
   err.style.display = 'none';
   var projet = document.getElementById('lead-projet').value || 'Non précisé';
+  var situation = document.getElementById('lead-situation').value || 'NC';
+  var situpro = document.getElementById('lead-situpro').value || 'NC';
+  var avecConjoint = document.getElementById('lead-conjoint').value;
+  var conjointNom = avecConjoint==='oui' ? document.getElementById('lead-conjoint-nom').value||'NC' : '';
+  var conjointTel = avecConjoint==='oui' ? document.getElementById('lead-conjoint-tel').value||'NC' : '';
+  var conjointEmail = avecConjoint==='oui' ? document.getElementById('lead-conjoint-email').value||'NC' : '';
+  var conjointSitupro = avecConjoint==='oui' ? document.getElementById('lead-conjoint-situpro').value||'NC' : '';
+  var conjointSitufam = avecConjoint==='oui' ? document.getElementById('lead-conjoint-situfam').value||'NC' : '';
   var btn = document.querySelector('#step-lead button');
   btn.textContent = 'Envoi en cours...'; btn.disabled = true;
   try {
@@ -1701,6 +1804,10 @@ async function validerLead() {
       body: JSON.stringify({
         access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom: nom, telephone: tel, email: email, projet: projet,
+        profil: document.getElementById('lead-profil').value||'NC',
+        situation_familiale: situation,
+        situation_professionnelle: situpro,
+        conjoint: avecConjoint==='oui' ? 'Oui — '+conjointNom+' · '+conjointTel+' · '+conjointEmail+' · Situpro: '+conjointSitupro+' · Situfam: '+conjointSitufam : 'Non',
         source: 'Site principal — calculette',
         subject: 'Nouveau lead simulateur — ' + nom
       })
@@ -1719,6 +1826,14 @@ async function demanderEtude() {
   var tel   = document.getElementById('lead-tel').value || 'NC';
   var email = document.getElementById('lead-email').value || 'NC';
   var projet= document.getElementById('lead-projet').value || 'NC';
+  var situation = document.getElementById('lead-situation').value || 'NC';
+  var situpro = document.getElementById('lead-situpro').value || 'NC';
+  var avecConjoint = document.getElementById('lead-conjoint').value;
+  var conjointNom = avecConjoint==='oui' ? document.getElementById('lead-conjoint-nom').value||'NC' : '';
+  var conjointTel = avecConjoint==='oui' ? document.getElementById('lead-conjoint-tel').value||'NC' : '';
+  var conjointEmail = avecConjoint==='oui' ? document.getElementById('lead-conjoint-email').value||'NC' : '';
+  var conjointSitupro = avecConjoint==='oui' ? document.getElementById('lead-conjoint-situpro').value||'NC' : '';
+  var conjointSitufam = avecConjoint==='oui' ? document.getElementById('lead-conjoint-situfam').value||'NC' : '';
   var rev   = document.getElementById('c-revenus').value || 'NC';
   var chg   = document.getElementById('c-charges').value || '0';
   var apt   = document.getElementById('c-apport').value || '0';
@@ -1739,6 +1854,10 @@ async function demanderEtude() {
       body: JSON.stringify({
         access_key: 'f339ad21-e807-4eca-8198-ae94f0c18f9e',
         nom: nom, telephone: tel, email: email, projet: projet,
+        profil: document.getElementById('lead-profil').value||'NC',
+        situation_familiale: situation,
+        situation_professionnelle: situpro,
+        conjoint: avecConjoint==='oui' ? 'Oui — '+conjointNom+' · '+conjointTel+' · '+conjointEmail+' · Situpro: '+conjointSitupro+' · Situfam: '+conjointSitufam : 'Non',
         revenus: rev + ' €/mois', charges: chg + ' €/mois',
         apport: apt + ' €', duree: dur + ' ans',
         source: source,
